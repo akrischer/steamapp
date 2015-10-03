@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Steam": {
+      "applicationId": "CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm"
+    },
+    "_default": {
+      "link": "Steam"
+    }
+  }
+}
