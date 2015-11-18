@@ -88,7 +88,7 @@ errors:
 
 So you must do `response.results` to get the actual results specified in the API.
 
-## User [/1/functions/users/$userId]
+## User [/v1/users/{userId}]
 
 ### Get User [GET]
 
@@ -157,7 +157,7 @@ Call this if you do not have the SteamApp-specific user ID. Will create a new us
         }
         
         
-## Game [/1/functions/users/$userId/games]
+## Game [/v1/users/{userId}/games]
 
 Get all games a user has in their library.
 
@@ -181,7 +181,7 @@ Get all games a user has in their library.
             }
         ]
         
-## Session [/1/functions/users/$userId/session]
+## Session [/v1/users/{userId}/session]
 
 The session represents a current state of filtered tags and games. A user
 can only have one session active at a time. Calling **POST Create New User**
@@ -435,7 +435,7 @@ parameters, set it as an empty list -- [].
         }
 
         
-## Criterion [/1/functions/criteria]
+## Criterion [/v1/criteria]
 
 A criterion is the things users can select that they care about (such as time,
 online capability, achievements, etc...). These are premade server side.
@@ -477,7 +477,7 @@ display name.
             }
         ]
 
-## Question [/1/functions/questions]
+## Question [/v1/questions]
 
 Questions are what the front-end uses to collect data about what a user actually
 wants. Each question relates to a **tag**, and each response to a question
