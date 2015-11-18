@@ -18,56 +18,50 @@ Scroll about halfway down, or CTRL+F "Parse + Framer Template" and start there.
 **Assuming** Parse is all setup, calling actual Cloud functions is pretty simple. Check
 [here](https://parse.com/docs/cloudcode/guide#cloud-code-advanced-networking) for documentation.
 
-To e.g. send a GET request:
-```
-Parse.Cloud.httpRequest({
-  url: 'http://www.google.com/search',
-  params: {
-    q : 'Sean Plott'
-  }
-}).then(function(httpResponse) {
-
-  console.log(httpResponse.text);
-  
-}, function(httpResponse) {
-
-  console.error('Request failed with response code ' + httpResponse.status);
-  
-});
-```
-
-`params` specifies the specific URL params, if there are any.
-
-
-To e.g. send a POST request:
+To make any call, you do
 
 ```
-Parse.Cloud.httpRequest({
-  method: 'POST',
-  url: 'http://www.example.com/create_post',
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8'
+Parse.Cloud.run('serve', params, {
+  success: function(response) {
+    // Do stuff with JSON response
+    // response.results holds the actual response data
   },
-  body: {
-    title: 'Vote for Pedro',
-    body: 'If you vote for Pedro, your wildest dreams will come true'
+  error: function(error) {
   }
-}).then(function(httpResponse) {
-
-  console.log(httpResponse.text);
-  
-}, function(httpResponse) {
-
-  console.error('Request failed with response code ' + httpResponse.status);
-  
 });
 ```
 
-Here, the **Content-Type** header is required because there is a body.
-`body` should contain your JSON request body.
+`params` is a special map where you indicate the **uri** and **verb action**
+you want to take, also specifying any **url parameters** (if GET) or **body**.
 
-Further d
+Here's an example params map to get a user with id 1:
 
+```
+var params = {
+  "uri" = "/v1/users/1",
+  "verb" = "GET"
+}
+```
+
+Here's a slightly more complicated example, updating a user's session:
+
+```
+// note by default, if a param is ommitted it's null
+var params = {
+  "uri" = "/v1/users/1/session",
+  "verb" = "PUT",
+  "body" = {
+    "include_games": [1],
+    "exclude_games": [],
+    "include_tags": null,
+    "exclude_tags: [2]
+  },
+  "urlParams": null
+}
+```
+
+`uri` is the uri specified in the API here. `verb` is the HTTP verb you're using.
+`body` is the JSON body map (if needed). `urlParams` is the JSON url params map (only for GET requests).
 ## User [/1/functions/users/$userId]
 
 ### Get User [GET]
@@ -141,7 +135,7 @@ Call this if you do not have the SteamApp-specific user ID. Will create a new us
 
 Get all games a user has in their library.
 
-### Get Games [GET]
+### Get Game [GET]
 
 + Response 200 (application/json)
 
@@ -154,37 +148,11 @@ Get all games a user has in their library.
                 "icon_url": "www.url.com",
                 "box_art_url": "www.url.com",
                 "sort_criteria": {
-                        "id": 1,
-                        "metacritic_score": 88,
-                        "price": 50.0
-                    }
-                },
-                {
-                "id": 3,
-                "name": "Dota2",
-                "game_version": 1,
-                "achievements_count": 40,
-                "icon_url": "www.url.com",
-                "box_art_url": "www.url.com",
-                "sort_criteria": {
-                        "id": 2,
-                        "metacritic_score": 94,
-                        "price": 0
-                    }
-                },
-                {
-                "id": 12,
-                "name": "Bananarama",
-                "game_version": 1,
-                "achievements_count": 0,
-                "icon_url": "www.url.com",
-                "box_art_url": "www.url.com",
-                "sort_criteria": {
-                        "id": 1,
-                        "metacritic_score": null,
-                        "price": 50.0
-                    }
+                    "id": 1,
+                    "metacritic_score": 88,
+                    "price": 50.0
                 }
+            }
         ]
         
 ## Session [/1/functions/users/$userId/session]
@@ -229,46 +197,46 @@ Gets most up-to-date session.
             ],
             "exclude_games": [],
             "games_count": 3,
-            "games": [
-                    {
-                    "id": 1,
-                    "name": "Call of Duty",
-                    "game_version": 2,
-                    "achievements_count": 12,
-                    "icon_url": "www.url.com",
-                    "box_art_url": "www.url.com",
-                    "sort_criteria": {
-                            "id": 1,
-                            "metacritic_score": 88,
-                            "price": 50.0
-                        }
-                    },
-                    {
-                    "id": 3,
-                    "name": "Dota2",
-                    "game_version": 1,
-                    "achievements_count": 40,
-                    "icon_url": "www.url.com",
-                    "box_art_url": "www.url.com",
-                    "sort_criteria": {
-                            "id": 2,
-                            "metacritic_score": 94,
-                            "price": 0
-                        }
-                    },
-                    {
-                    "id": 12,
-                    "name": "Bananarama",
-                    "game_version": 1,
-                    "achievements_count": 0,
-                    "icon_url": "www.url.com",
-                    "box_art_url": "www.url.com",
-                    "sort_criteria": {
-                            "id": 1,
-                            "metacritic_score": null,
-                            "price": 50.0
-                        }
-                    },
+            [
+                {
+                "id": 1,
+                "name": "Call of Duty",
+                "game_version": 2,
+                "achievements_count": 12,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": 88,
+                        "price": 50.0
+                    }
+                },
+                {
+                "id": 3,
+                "name": "Dota2",
+                "game_version": 1,
+                "achievements_count": 40,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 2,
+                        "metacritic_score": 94,
+                        "price": 0
+                    }
+                },
+                {
+                "id": 12,
+                "name": "Bananarama",
+                "game_version": 1,
+                "achievements_count": 0,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": null,
+                        "price": 50.0
+                    }
+                },
             ]
         }
         
@@ -299,7 +267,7 @@ Creates a new session for the user. If a session is currently open, it closes th
             "include_games": [],
             "exclude_games": [],
             "games_count": 3,
-            "games": [
+            [
                 {
                 "id": 1,
                 "name": "Call of Duty",
@@ -436,7 +404,7 @@ parameters, set it as an empty list -- [].
                         "metacritic_score": null,
                         "price": 50.0
                     }
-                }
+                },
             ]
         }
 
@@ -517,13 +485,13 @@ You should have all criteria ids through GET /1/functions/criteria
                         "text": "Do you want to play a short game?",
                         "responses": [
                             {
-                                "text": "Yes",
+                                "text": "Yes"
                                 "valence": 1
                             },
                             {
-                                "text": "No",
+                                "text": "No"
                                 "valence": -1
-                            }
+                            },
                         ]
                     },
                     {
@@ -536,15 +504,15 @@ You should have all criteria ids through GET /1/functions/criteria
                         "text": "Do you LIKE shorter games?",
                         "responses": [
                             {
-                                "text": "Yes",
+                                "text": "Yes"
                                 "valence": 1
                             },
                             {
-                                "text": "No",
+                                "text": "No"
                                 "valence": -1
-                            }
+                            },
                         ]
-                    }
+                    },
                 ]
             }
         ]
