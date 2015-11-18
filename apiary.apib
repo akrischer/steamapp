@@ -1,0 +1,524 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Steam App
+
+## Calling Cloud Functions (i.e. Parse function)
+
+First things first, we will need to install the Parse javascript SDK into Framer.
+
+[This Link](http://framer.link/cl.ly/1R1S0u2A0505/download/Blank%20Parse%20Template.framer.zip) may be of use,
+which is a basic Framer template that already has the Parse js SDK installed.
+
+If you want to install it manually, follow [this guide](http://blog.parse.com/learn/using-parse-to-power-up-your-framer-prototypes-part-i/).
+Scroll about halfway down, or CTRL+F "Parse + Framer Template" and start there.
+
+
+
+**Assuming** Parse is all setup, calling actual Cloud functions is pretty simple. Check
+[here](https://parse.com/docs/cloudcode/guide#cloud-code-advanced-networking) for documentation.
+
+To e.g. send a GET request:
+```
+Parse.Cloud.httpRequest({
+  url: 'http://www.google.com/search',
+  params: {
+    q : 'Sean Plott'
+  }
+}).then(function(httpResponse) {
+
+  console.log(httpResponse.text);
+  
+}, function(httpResponse) {
+
+  console.error('Request failed with response code ' + httpResponse.status);
+  
+});
+```
+
+`params` specifies the specific URL params, if there are any.
+
+
+To e.g. send a POST request:
+
+```
+Parse.Cloud.httpRequest({
+  method: 'POST',
+  url: 'http://www.example.com/create_post',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: {
+    title: 'Vote for Pedro',
+    body: 'If you vote for Pedro, your wildest dreams will come true'
+  }
+}).then(function(httpResponse) {
+
+  console.log(httpResponse.text);
+  
+}, function(httpResponse) {
+
+  console.error('Request failed with response code ' + httpResponse.status);
+  
+});
+```
+
+Here, the **Content-Type** header is required because there is a body.
+`body` should contain your JSON request body.
+
+Further d
+
+## User [/v1/users/$userId]
+
+### Get User [GET]
+
+Get all user information you could need for a SteamApp user. This requires
+knowledge of the user's SteamApp (_not_ Steam) id.
+
+    
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "steam_id": 123,
+            "display_name": "Petracles",
+            "avatar_small": "www.url.com",
+            "avatar_medium": "www.url.com",
+            "avatar_full": "www.url.com",
+            "created_at": "2015-11-16T22:23:48Z",
+            "updated_at": "2015-11-16T22:23:48Z"
+        }
+        
+        
++ Response 403 (application/json)
+
+        [
+            {
+                "name": "ACCOUNT_NOT_VISIBLE",
+                "parameter": null,
+                "message": "Unfortunately you must make your profile public if you wish to use our app."
+            }
+        ]
+
+### Create/Get New User [POST]
+
+Call this if you do not have the SteamApp-specific user ID. Will create a new user if none is found.
+
++ Request (application/json)
+
+        {
+            "steam_account_name": "PetraclesSteam"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": 1,
+            "steam_id": 123,
+            "display_name": "Petracles",
+            "avatar_small": "www.url.com",
+            "avatar_medium": "www.url.com",
+            "avatar_full": "www.url.com",
+            "created_at": "2015-11-16T22:23:48Z",
+            "updated_at": "2015-11-16T22:23:48Z"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "steam_id": 123,
+            "display_name": "Petracles",
+            "avatar_small": "www.url.com",
+            "avatar_medium": "www.url.com",
+            "avatar_full": "www.url.com",
+            "created_at": "2015-11-16T22:23:48Z",
+            "updated_at": "2015-11-16T22:23:48Z"
+        }
+        
+        
+## Game [/v1/users/$userId/games]
+
+Get all games a user has in their library.
+
+### Get Game [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Call of Duty",
+                "game_version": 2,
+                "achievements_count": 12,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                    "id": 1,
+                    "metacritic_score": 88,
+                    "price": 50.0
+                }
+            }
+        ]
+        
+## Session [/v1/users/$userId/session]
+
+The session represents a current state of filtered tags and games. A user
+can only have one session active at a time. Calling **POST Create New User**
+_does not_ automatically creates a new session and open it. If you do not have a current
+session handle (i.e. its ID), call **POST Create New Session**
+
+**status** can be either **"OPEN"** or **"CLOSED"**.
+
+### Get Session [GET]
+
+Gets most up-to-date session.
+
++ Response 200 (application/json)
+
+        {
+            "status": "OPEN",
+            "include_tags": [
+                {
+                    "id": 1,
+                    "display_tag": "short game",
+                    "hidden_tag": "short"
+                }
+            ],
+            "exclude_tags": [],
+            "include_games": [
+                {
+                    "id": 1,
+                    "name": "Call of Duty",
+                    "game_version": 2,
+                    "achievements_count": 12,
+                    "icon_url": "www.url.com",
+                    "box_art_url": "www.url.com",
+                    "sort_criteria": {
+                            "id": 1,
+                            "metacritic_score": 88,
+                            "price": 50.0
+                        }
+                }
+            ],
+            "exclude_games": [],
+            "games_count": 3,
+            [
+                {
+                "id": 1,
+                "name": "Call of Duty",
+                "game_version": 2,
+                "achievements_count": 12,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": 88,
+                        "price": 50.0
+                    }
+                },
+                {
+                "id": 3,
+                "name": "Dota2",
+                "game_version": 1,
+                "achievements_count": 40,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 2,
+                        "metacritic_score": 94,
+                        "price": 0
+                    }
+                },
+                {
+                "id": 12,
+                "name": "Bananarama",
+                "game_version": 1,
+                "achievements_count": 0,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": null,
+                        "price": 50.0
+                    }
+                },
+            ]
+        }
+        
+        
++ Response 403 (application/json)
+
+        [
+            {
+                "name": "INVALID_SESSION_ID",
+                "parameter": sessionId,
+                "message": "No specified session can be found."
+            }
+        ]
+    
+
+### Create New Session [POST]
+
+Creates a new session for the user. If a session is currently open, it closes that one and creates a new one.
+
++ Request (application/json)
+
++ Response 202 (application/json)
+
+        {
+            "status": "OPEN",
+            "include_tags": [],
+            "exclude_tags": [],
+            "include_games": [],
+            "exclude_games": [],
+            "games_count": 3,
+            [
+                {
+                "id": 1,
+                "name": "Call of Duty",
+                "game_version": 2,
+                "achievements_count": 12,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": 88,
+                        "price": 50.0
+                    }
+                },
+                {
+                "id": 3,
+                "name": "Dota2",
+                "game_version": 1,
+                "achievements_count": 40,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 2,
+                        "metacritic_score": 94,
+                        "price": 0
+                    }
+                },
+                {
+                "id": 12,
+                "name": "Bananarama",
+                "game_version": 1,
+                "achievements_count": 0,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": null,
+                        "price": 50.0
+                    }
+                },
+            ]
+        }
+        
+### Update Session [PUT]
+
+Update the session parameters:
+
+**include_games** : List of games (specified with game ids) to include
+    
+**exclude_games** : List of games (specified with game ids) to exclude
+    
+**include_tags** : List of tags (specified with tag ids) to include
+    
+**exclude_tags** : List of tags (specified with tag ids) to exclude
+    
+**status** : Either "CLOSED" or "OPEN", to close or open the status.
+    
+Parameters that are **null** will **not** be updated. To "nullify" one of the include/exclude
+parameters, set it as an empty list -- [].
+
++ Request (application/json)
+
+        {
+            "include_games": [1],
+            "exclude_games": [],
+            "include_tags": null,
+            "exclude_tags": [2]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "status": "OPEN",
+            "include_tags": [],
+            "exclude_tags": [
+                {
+                    "id": 2,
+                    "display_tag": "Multiplayer",
+                    "hidden_tag": "co-op"
+                }
+            ],
+            "include_games": [
+                {
+                    "id": 1,
+                    "name": "Call of Duty",
+                    "game_version": 2,
+                    "achievements_count": 12,
+                    "icon_url": "www.url.com",
+                    "box_art_url": "www.url.com",
+                    "sort_criteria": {
+                            "id": 1,
+                            "metacritic_score": 88,
+                            "price": 50.0
+                        }
+                }
+            ],
+            "exclude_games": [],
+            "games_count": 3,
+            [
+                {
+                "id": 1,
+                "name": "Call of Duty",
+                "game_version": 2,
+                "achievements_count": 12,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": 88,
+                        "price": 50.0
+                    }
+                },
+                {
+                "id": 3,
+                "name": "Dota2",
+                "game_version": 1,
+                "achievements_count": 40,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 2,
+                        "metacritic_score": 94,
+                        "price": 0
+                    }
+                },
+                {
+                "id": 12,
+                "name": "Bananarama",
+                "game_version": 1,
+                "achievements_count": 0,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": null,
+                        "price": 50.0
+                    }
+                },
+            ]
+        }
+
+        
+## Criterion [/v1/criteria]
+
+A criterion is the things users can select that they care about (such as time,
+online capability, achievements, etc...). These are premade server side.
+
+Each criterion has an **id**, a list of **tags** that it pertains to, and a
+display name.
+
+### Get Criteria [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "tags": [
+                    {
+                        "id": 1,
+                        "display_tag": "short game",
+                        "hidden_tag": "short"
+                    },
+                    {
+                        "id": 3,
+                        "display_tag": "casual",
+                        "hidden_tag": "casual"
+                    }
+                ],
+                "name": "Time"
+            },
+            {
+                "id": 2,
+                "tags": [
+                    {
+                        "id": 2,
+                        "display_tag": "Multiplayer",
+                        "hidden_tag": "co-op"
+                    }
+                ],
+                "name": "Co-Op"
+            }
+        ]
+
+## Question [/v1/questions]
+
+Questions are what the front-end uses to collect data about what a user actually
+wants. Each question relates to a **tag**, and each response to a question
+has a valence. Thus, the valence to the tag can be used to update the **session**'s
+_include_ or _exclude_ tags.
+
+### Get Questions [GET]
+
+Get questions for different criteria. By default, all enabled questions for all enabled criteria
+will be returned. Filter returned questions by URL Parameter **include_criteria**
+
+E.g.
+
+"/v1/questions?include_criteria=[1,4,5]"
+
+You should have all criteria ids through GET /v1/criteria
+
++ Response 200
+
+        [
+            {
+                "criterion_id": 1,
+                "questions": [
+                    {
+                        "id": 1,
+                        "tag": {
+                            "id": 1,
+                            "display_tag": "short game",
+                            "hidden_tag": "short"
+                        },
+                        "text": "Do you want to play a short game?",
+                        "responses": [
+                            {
+                                "text": "Yes"
+                                "valence": 1
+                            },
+                            {
+                                "text": "No"
+                                "valence": -1
+                            },
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "tag": {
+                            "id": 1,
+                            "display_tag": "short game",
+                            "hidden_tag": "short"
+                        },
+                        "text": "Do you LIKE shorter games?",
+                        "responses": [
+                            {
+                                "text": "Yes"
+                                "valence": 1
+                            },
+                            {
+                                "text": "No"
+                                "valence": -1
+                            },
+                        ]
+                    },
+                ]
+            }
+        ]
