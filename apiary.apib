@@ -62,6 +62,32 @@ var params = {
 
 `uri` is the uri specified in the API here. `verb` is the HTTP verb you're using.
 `body` is the JSON body map (if needed). `urlParams` is the JSON url params map (only for GET requests).
+
+## Cloud Function Responses
+
+Please note that responses come in the form of
+
+successes:
+
+```
+{
+    "results" {
+        ...
+    }
+}
+```
+
+errors:
+
+```
+{
+    "code": <int>,
+    "error": "some message"
+}
+```
+
+So you must do `response.results` to get the actual results specified in the API.
+
 ## User [/1/functions/users/$userId]
 
 ### Get User [GET]
