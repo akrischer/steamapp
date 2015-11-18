@@ -141,7 +141,7 @@ Call this if you do not have the SteamApp-specific user ID. Will create a new us
 
 Get all games a user has in their library.
 
-### Get Game [GET]
+### Get Games [GET]
 
 + Response 200 (application/json)
 
@@ -154,11 +154,37 @@ Get all games a user has in their library.
                 "icon_url": "www.url.com",
                 "box_art_url": "www.url.com",
                 "sort_criteria": {
-                    "id": 1,
-                    "metacritic_score": 88,
-                    "price": 50.0
+                        "id": 1,
+                        "metacritic_score": 88,
+                        "price": 50.0
+                    }
+                },
+                {
+                "id": 3,
+                "name": "Dota2",
+                "game_version": 1,
+                "achievements_count": 40,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 2,
+                        "metacritic_score": 94,
+                        "price": 0
+                    }
+                },
+                {
+                "id": 12,
+                "name": "Bananarama",
+                "game_version": 1,
+                "achievements_count": 0,
+                "icon_url": "www.url.com",
+                "box_art_url": "www.url.com",
+                "sort_criteria": {
+                        "id": 1,
+                        "metacritic_score": null,
+                        "price": 50.0
+                    }
                 }
-            }
         ]
         
 ## Session [/1/functions/users/$userId/session]
@@ -410,7 +436,7 @@ parameters, set it as an empty list -- [].
                         "metacritic_score": null,
                         "price": 50.0
                     }
-                },
+                }
             ]
         }
 
