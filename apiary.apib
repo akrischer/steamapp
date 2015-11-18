@@ -68,7 +68,7 @@ Here, the **Content-Type** header is required because there is a body.
 
 Further d
 
-## User [/v1/users/$userId]
+## User [/1/functions/users/$userId]
 
 ### Get User [GET]
 
@@ -137,7 +137,7 @@ Call this if you do not have the SteamApp-specific user ID. Will create a new us
         }
         
         
-## Game [/v1/users/$userId/games]
+## Game [/1/functions/users/$userId/games]
 
 Get all games a user has in their library.
 
@@ -161,7 +161,7 @@ Get all games a user has in their library.
             }
         ]
         
-## Session [/v1/users/$userId/session]
+## Session [/1/functions/users/$userId/session]
 
 The session represents a current state of filtered tags and games. A user
 can only have one session active at a time. Calling **POST Create New User**
@@ -415,7 +415,7 @@ parameters, set it as an empty list -- [].
         }
 
         
-## Criterion [/v1/criteria]
+## Criterion [/1/functions/criteria]
 
 A criterion is the things users can select that they care about (such as time,
 online capability, achievements, etc...). These are premade server side.
@@ -457,7 +457,7 @@ display name.
             }
         ]
 
-## Question [/v1/questions]
+## Question [/1/functions/questions]
 
 Questions are what the front-end uses to collect data about what a user actually
 wants. Each question relates to a **tag**, and each response to a question
@@ -471,9 +471,9 @@ will be returned. Filter returned questions by URL Parameter **include_criteria*
 
 E.g.
 
-"/v1/questions?include_criteria=[1,4,5]"
+"/1/functions/questions?include_criteria=[1,4,5]"
 
-You should have all criteria ids through GET /v1/criteria
+You should have all criteria ids through GET /1/functions/criteria
 
 + Response 200
 
