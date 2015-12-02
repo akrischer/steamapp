@@ -24,12 +24,8 @@ var _ = require('underscore');
 
 module.exports.success = function(response, resource) {
     var className = Array.isArray(resource) && resource.length > 0 ? resource[0].className : resource.className;
-
-    if (typeof this[className] === 'function') {
-        console.log("Make it to className is function");
-        this[className](response, resource);
-    }
-    response.success(window[className](resource));
+    // TODO: Please, find something better than eval
+    response.success(eval(className)(resource));
 };
 
 
