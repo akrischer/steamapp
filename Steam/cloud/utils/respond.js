@@ -172,7 +172,7 @@ function Question(resource) {
         });
         return {
             id: question.id,
-            tag: question.get('tag'),
+            tag: Tag(question.get('tag')),
             text: question.get('text'),
             responses: responses
         }

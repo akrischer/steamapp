@@ -4,7 +4,7 @@ var parseUtils = require('cloud/utils/parseUtils.js');
 var Question = Parse.Object.extend('Question');
 
 module.exports.get = function(urlParams, response) {
-    var includeOnly = urlParams.include_only | [];
+    var includeOnly = urlParams.include_only ? urlParams.include_only : [];
     // map includeOnly to become array of pointers to Criterion
     includeOnly = parseUtils.createListOfPointers("Criterion", includeOnly);
 
