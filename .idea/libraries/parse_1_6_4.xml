@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="parse-1.6.4" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/Steam/Dependencies/parse-1.6.4.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Steam/cloud/Dependencies/parse-1.6.4.js" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

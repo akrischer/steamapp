@@ -1,7 +1,8 @@
 {
   "applications": {
     "Steam": {
-      "applicationId": "CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm"
+      "applicationId": "CmiqvYFtH6MgT0EuwBpgbbIEtrRdJcBM5VxpmXIm",
+	  "masterKey": "wE2hz9z23aUosveOj9iafexe3CccClFU8ilMcMr4"
     },
     "_default": {
       "link": "Steam"

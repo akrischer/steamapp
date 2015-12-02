@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="html2json" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/Steam/cloud/Dependencies/html2json.js" />
+        <item url="file://$PROJECT_DIR$/Steam/cloud/Dependencies/htmlparser.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/Steam/cloud/Dependencies/html2json.js" />
+      <root url="file://$PROJECT_DIR$/Steam/cloud/Dependencies/htmlparser.js" />
+    </SOURCES>
+  </library>
+</component>
