@@ -7,8 +7,7 @@ module.exports.get = function(urlParams, response) {
       url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + steamKey + "&vanityurl=" + urlParams.userId
     }).then(function(data) {
       //success
-      response.success(data);
-      steamid = data.steamid;
+      steamid = data.data.response.steamid;
       Parse.Cloud.httpRequest({
         method: "GET",
         url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + steamKey + "&steamids=" + steamid
