@@ -7,6 +7,7 @@ module.exports.get = function(urlParams, response) {
       url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + steamKey + "&vanityurl=" + urlParams.userId
     }).then(function(data) {
       //success
+      response.success(data);
       steamid = data.steamid;
       Parse.Cloud.httpRequest({
         method: "GET",
@@ -15,6 +16,7 @@ module.exports.get = function(urlParams, response) {
         //success
         response.success(response);
       }, function(data) {
+        //error
         response.error("incorrect vanity url");
       });
     }, function(data) {
