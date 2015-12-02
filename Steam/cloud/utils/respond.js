@@ -29,17 +29,20 @@ module.exports.success = function(response, resource) {
     response.success(eval(className)(resource));
 };
 
-
-function Session(resource) {
+function handleArrays(resource, callback) {
     if (Array.isArray(resource)) {
         var list = [];
         for (var i = 0; i < resource.length; i++) {
-            list.push(_Session(resource[i]));
+            list.push(callback(resource[i]));
         }
         return list;
     } else {
-        return _Session(resource);
+        return callback(resource);
     }
+}
+
+function Session(resource) {
+    handleArrays(resource, _Session);
 
     function _Session(session) {
         const deepIncludeExclude = false;
@@ -89,15 +92,7 @@ function Session(resource) {
 }
 
 function Game(resource) {
-    if (Array.isArray(resource)) {
-        var list = [];
-        for (var i = 0; i < resource.length; i++) {
-            list.push(_Game(resource[i]));
-        }
-        return list;
-    } else {
-        return _Game(resource);
-    }
+    handleArrays(resource, _Game);
     function _Game(game) {
         return {
             id: game.id,
@@ -113,15 +108,7 @@ function Game(resource) {
 }
 
 function Tag(resource) {
-    if (Array.isArray(resource)) {
-        var list = [];
-        for (var i = 0; i < resource.length; i++) {
-            list.push(_Tag(resource[i]));
-        }
-        return list;
-    } else {
-        return _Tag(resource);
-    }
+    handleArrays(resource, _Tag);
     function _Tag(tag) {
         return {
             id: tag.id,
@@ -132,15 +119,7 @@ function Tag(resource) {
 }
 
 function Criterion(resource) {
-    if (Array.isArray(resource)) {
-        var list = [];
-        for (var i = 0; i < resource.length; i++) {
-            list.push(_Criterion(resource[i]));
-        }
-        return list;
-    } else {
-        return _Criterion(resource);
-    }
+    handleArrays(resource, _Criterion);
     function _Criterion(criterion) {
         return {
             id: criterion.id,
@@ -148,8 +127,54 @@ function Criterion(resource) {
             name: criterion.get('name'),
             tags: Tag(criterion.get('tags'))
         };
+        function _getIconUrl(criterionName) {
+            return images.getBaseDomainUrl('criterion') + "/" + criterionName + ".png";
+        }
     }
-    function _getIconUrl(criterionName) {
-        return images.getBaseDomainUrl('criterion') + "/" + criterionName + ".png";
+
+}
+
+function Question(resource) {
+    // create a list of just criteria ids
+    var criteriaIds = resource.map(function(question) {
+       return question.get('criterion').id;
+    });
+
+    // Then for each criterion id, filter the questions to find the questions whose criterion id match.
+    // Then build the object.
+    var listOfQuestionsByCriterionId = [];
+    _.each(criteriaIds, function(criterionId) {
+        var questions = resource.filter(function(question) {
+            return criterionId === question.get('criterion').id;
+        });
+        // marshall each question
+        questions = questions.map(function(q) {
+            return _Question(q);
+        });
+
+        // build second layer, where each question relates to a criterion
+        var newQuestionObject = {
+            criterion_id: criterionId,
+            questions: questions
+        };
+        listOfQuestionsByCriterionId.push(newQuestionObject);
+    });
+
+    return listOfQuestionsByCriterionId;
+
+    function _Question(question) {
+        // correctly format responses
+        var responses = question.get('responses').map(function(r) {
+            return {
+                text: r.text,
+                valence: r.valence
+            }
+        });
+        return {
+            id: question.id,
+            tag: question.get('tag'),
+            text: question.get('text'),
+            responses: responses
+        }
     }
 }
