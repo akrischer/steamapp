@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/test_Co-Op.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/test_Time.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/criterion.js" afterPath="$PROJECT_DIR$/Steam/cloud/criterion.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" afterPath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,18 +46,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="respond.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DHTML.js" pinned="false" current-in-tab="false">
         <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -79,11 +66,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="criterion.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="respond.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8690293">
+              <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="criterion.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5636161">
-              <caret line="35" column="2" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="2" selection-start-line="20" selection-start-column="2" selection-end-line="20" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -152,8 +151,8 @@
         <option value="$PROJECT_DIR$/Steam/cloud/main.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/game.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/session.js" />
-        <option value="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/criterion.js" />
+        <option value="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
       </list>
     </option>
   </component>
@@ -176,10 +175,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1744" />
-    <option name="y" value="8" />
+    <option name="x" value="250" />
+    <option name="y" value="43" />
     <option name="width" value="1193" />
-    <option name="height" value="1032" />
+    <option name="height" value="785" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -714,15 +713,15 @@
       <workItem from="1448905919135" duration="12582000" />
       <workItem from="1448947374665" duration="906000" />
       <workItem from="1288761406777" duration="37000" />
-      <workItem from="1449008164803" duration="38781000" />
+      <workItem from="1449008164803" duration="39150000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77169000" />
+    <option name="totallyTimeSpent" value="77538000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1744" y="8" width="1193" height="1032" extended-state="0" />
+    <frame x="250" y="43" width="1193" height="785" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1162,21 +1161,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <caret line="20" column="2" selection-start-line="20" selection-start-column="2" selection-end-line="20" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5636161">
-          <caret line="35" column="2" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="2" />
-          <folding />
+        <state vertical-scroll-proportion="0.8690293">
+          <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

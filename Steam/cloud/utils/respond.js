@@ -21,6 +21,7 @@
  * @param resource - resource object that will be marshalled
  */
 var _ = require('underscore');
+var criterion_domain = require('cloud/criterion.js');
 
 module.exports.success = function(response, resource) {
     var className = Array.isArray(resource) && resource.length > 0 ? resource[0].className : resource.className;
@@ -126,6 +127,26 @@ function Tag(resource) {
             id: tag.id,
             icon_url: tag.get('icon_url'),
             name: tag.get('name')
+        };
+    }
+}
+
+function Criterion(resource) {
+    if (Array.isArray(resource)) {
+        var list = [];
+        for (var i = 0; i < resource.length; i++) {
+            list.push(_Criterion(resource[i]));
+        }
+        return list;
+    } else {
+        return _Criterion(resource);
+    }
+    function _Criterion(criterion) {
+        return {
+            id: criterion.id,
+            icon_url: criterion_domain.getIconUrl(criterion.get('name')),
+            name: criterion.get('name'),
+            tags: Tag(criterion.get('tags'))
         };
     }
 }
