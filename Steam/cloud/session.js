@@ -5,6 +5,9 @@ var respond = require('cloud/utils/respond.js');
 
 var Session = Parse.Object.extend('Session');
 
+// Before any session saves, it will go through this function.
+// If response.success, it saves as normal.
+// If response.error, it will fail the save.
 Parse.Cloud.beforeSave("Session", function(request, response) {
     var body = request.params ? request.params.body : null;
     // if Session.status is being udpated...
@@ -208,7 +211,7 @@ module.exports.update = function(body, response) {
         }
     }).then(function(session) {
         // success
-        response.success(session);
+        respond.success(response, session);
     }, function(error) {
         response.error(error);
     })

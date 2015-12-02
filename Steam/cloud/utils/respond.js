@@ -77,7 +77,7 @@ function Session(resource) {
             })
     });
     return {
-        id: resource.get('objectId'),
+        id: resource.id,
         status: resource.get('status'),
         include_tags: include_tags,
         exclude_tags: exclude_tags,
@@ -124,6 +124,7 @@ function Tag(resource) {
     }
     function _Tag(tag) {
         return {
+            id: tag.id,
             icon_url: tag.get('icon_url'),
             name: tag.get('name')
         };
