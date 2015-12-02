@@ -1,4 +1,27 @@
+var SteamService = require('services/SteamService.js');
+
 module.exports.get = function(urlParams, response) {
+    var steamid;
+    Parse.Cloud.httpRequest({
+      method: "GET",
+      url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + SteamService.steamKey + "&vanityurl=" + urlParams.userId
+    }).then(function(response) {
+      //success
+      steamid = response.steamid;
+      Parse.Cloud.httpRequest({
+        method: "GET",
+        url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + SteamService.steamKey + "&steamids=" + steamid
+      }).then(function(data) {
+        //success
+        response.success(response);
+      });
+    }, function(response) {
+      //failure
+      console.error("vanityurl incorrect");
+    });
+
+
+
     var user = {
         "id": 1,
         "steam_id": 123,
