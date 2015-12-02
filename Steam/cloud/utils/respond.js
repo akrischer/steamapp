@@ -42,7 +42,7 @@ function handleArrays(resource, callback) {
 }
 
 function Session(resource) {
-    handleArrays(resource, _Session);
+    return handleArrays(resource, _Session);
 
     function _Session(session) {
         const deepIncludeExclude = false;
@@ -92,7 +92,7 @@ function Session(resource) {
 }
 
 function Game(resource) {
-    handleArrays(resource, _Game);
+    return handleArrays(resource, _Game);
     function _Game(game) {
         return {
             id: game.id,
@@ -108,7 +108,7 @@ function Game(resource) {
 }
 
 function Tag(resource) {
-    handleArrays(resource, _Tag);
+    return handleArrays(resource, _Tag);
     function _Tag(tag) {
         return {
             id: tag.id,
@@ -119,7 +119,7 @@ function Tag(resource) {
 }
 
 function Criterion(resource) {
-    handleArrays(resource, _Criterion);
+    return handleArrays(resource, _Criterion);
     function _Criterion(criterion) {
         return {
             id: criterion.id,
