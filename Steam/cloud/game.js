@@ -58,13 +58,12 @@ module.exports.getAllUserGamesQuery = function(userId, excludeGamesArray, exclud
     // get all the games that should be blacklisted
     var blacklistGamesQuery = new Parse.Query(Parse.Object.extend('Game'));
     blacklistGamesQuery.containedIn('tags', tagPtrs);
-    blacklistGamesQuery.equalTo('user', userPtr);
-    
+
     var userGamesQuery = new Parse.Query(UserGame);
     userGamesQuery.include('game');
     userGamesQuery.equalTo('user', userPtr);
     userGamesQuery.notContainedIn('game', gamePtrs);
-    userGamesQuery.doesNotMatchKeyInQuery('objectId', 'objectId', blacklistGamesQuery);
+    userGamesQuery.doesNotMatchQuery('game', blacklistGamesQuery);
 
     return userGamesQuery;
 }
