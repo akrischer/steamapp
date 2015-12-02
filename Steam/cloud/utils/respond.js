@@ -23,13 +23,8 @@
 var parseUtils = require('cloud/utils/parseUtils.js');
 var _ = require('underscore');
 
-module.exports.success = function(response, resource, isManyResources) {
-    //console.log("----------   SUCCESS ----------");
-    //console.log(resource);
-    //console.log(resource.result.className);
-    if (typeof(isManyResources) === 'undefined') isManyResources = false;
-
-    var className = isManyResources && resource.length > 0 ? resource[0].className : resource.className;
+module.exports.success = function(response, resource) {
+    var className = Array.isArray(resource) && resource.length > 0 ? resource[0].className : resource.className;
 
     if (typeof this[className] === 'function') {
         console.log("Make it to className is function");
@@ -41,48 +36,61 @@ module.exports.success = function(response, resource, isManyResources) {
 
 
 function Session(resource) {
-    const deepIncludeExclude = false;
-
-    var steamAccount = resource.get('user_id').get('steam_account');
-    var gameLibrary = steamAccount.get('game_library');
-
-    var exclude_tags = deepIncludeExclude ? Tag(resource.get('exclude_tags')) : resource.get('exclude_tags').map(function(t){return t.id;});
-    var exclude_games = deepIncludeExclude ? Game(resource.get('exclude_games')) : resource.get('exclude_games').map(function(g){return g.id;});
-    var games = gameLibrary.get('games');
-
-    // filter out all games in exclude_games list
-    games = games.filter(function(game) {
-        return -1 === (exclude_games.map(function(g) {
-            return g.id;
-        }).indexOf(game.id));
-    });
-    // filter out all games that have tags in the exclude_tags list
-    // first--list of tag ids
-    var excludeTagIds = exclude_tags;
-    if (deepIncludeExclude) {
-        excludeTagIds = exclude_tags.map(function(t) {
-            return t.id;
-        });
+    if (Array.isArray(resource)) {
+        var list = [];
+        for (var i = 0; i < resource.length; i++) {
+            list.push(_Session(resource[i]));
+        }
+        return list;
+    } else {
+        return _Session(resource);
     }
-    games = games.filter(function(game) {
-        var gameTagIds = game.get('tags').map(function(t) {
-            return t.id;
+
+    function _Session(session) {
+        const deepIncludeExclude = false;
+
+        var steamAccount = session.get('user_id').get('steam_account');
+        var gameLibrary = steamAccount.get('game_library');
+
+        var exclude_tags = deepIncludeExclude ? Tag(session.get('exclude_tags')) : session.get('exclude_tags').map(function(t){return t.id;});
+        var exclude_games = deepIncludeExclude ? Game(session.get('exclude_games')) : session.get('exclude_games').map(function(g){return g.id;});
+        var games = gameLibrary.get('games');
+
+        // filter out all games in exclude_games list
+        games = games.filter(function(game) {
+            return -1 === (exclude_games.map(function(g) {
+                    return g.id;
+                }).indexOf(game.id));
         });
-        // True iff none of the game's tag ids are in excludeTagIds
-        return !gameTagIds.some(function(id) {
+        // filter out all games that have tags in the exclude_tags list
+        // first--list of tag ids
+        var excludeTagIds = exclude_tags;
+        if (deepIncludeExclude) {
+            excludeTagIds = exclude_tags.map(function(t) {
+                return t.id;
+            });
+        }
+        games = games.filter(function(game) {
+            var gameTagIds = game.get('tags').map(function(t) {
+                return t.id;
+            });
+            // True iff none of the game's tag ids are in excludeTagIds
+            return !gameTagIds.some(function(id) {
                 // True iff any of the game's tags are in excludeTagIds
                 return -1 !== excludeTagIds.indexOf(id);
             })
-    });
-    // return object that'll actually be marshalled
-    return {
-        id: resource.id,
-        status: resource.get('status'),
-        exclude_tags: exclude_tags,
-        exclude_games: exclude_games,
-        games_count: games.length,
-        games: Game(games)
-    };
+        });
+        // return object that'll actually be marshalled
+        return {
+            id: session.id,
+            status: session.get('status'),
+            exclude_tags: exclude_tags,
+            exclude_games: exclude_games,
+            games_count: games.length,
+            games: Game(games)
+        };
+    }
+
 }
 
 function Game(resource) {

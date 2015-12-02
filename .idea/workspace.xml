@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" afterPath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/session.js" afterPath="$PROJECT_DIR$/Steam/cloud/session.js" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,8 +48,8 @@
       <file leaf-file-name="respond.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5178572">
-              <caret line="80" column="35" selection-start-line="80" selection-start-column="35" selection-end-line="80" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.3984375">
+              <caret line="25" column="55" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -720,12 +719,12 @@
       <workItem from="1448905919135" duration="12582000" />
       <workItem from="1448947374665" duration="906000" />
       <workItem from="1288761406777" duration="37000" />
-      <workItem from="1449008164803" duration="36558000" />
+      <workItem from="1449008164803" duration="37271000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74946000" />
+    <option name="totallyTimeSpent" value="75659000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1679" y="0" width="1193" height="1032" extended-state="0" />
@@ -1172,8 +1171,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5178572">
-          <caret line="80" column="35" selection-start-line="80" selection-start-column="35" selection-end-line="80" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.3984375">
+          <caret line="25" column="55" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
