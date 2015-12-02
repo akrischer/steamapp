@@ -20,7 +20,6 @@
  * @param response - response object
  * @param resource - resource object that will be marshalled
  */
-var parseUtils = require('cloud/utils/parseUtils.js');
 var _ = require('underscore');
 
 module.exports.success = function(response, resource) {
@@ -30,8 +29,7 @@ module.exports.success = function(response, resource) {
         console.log("Make it to className is function");
         this[className](response, resource);
     }
-    console.log(typeof this[className]);
-    response.success(Session(resource));
+    response.success(window[className](resource));
 };
 
 
