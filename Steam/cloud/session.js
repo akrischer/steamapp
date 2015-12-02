@@ -150,8 +150,6 @@ module.exports.create = function(body, response) {
         var newSession = new Session();
         newSession.set('user_id', userPtr);
         newSession.set('status', 'OPEN');
-        newSession.set('include_tags', []);
-        newSession.set('include_games', []);
         newSession.set('exclude_tags', []);
         newSession.set('exclude_games', []);
         return newSession.save();
@@ -164,9 +162,7 @@ module.exports.create = function(body, response) {
 
 /**
  * Possible updatable fields:
- *      include_games
  *      exclude_games
- *      include_tags
  *      exclude_tags
  *      status
  *
@@ -188,14 +184,8 @@ module.exports.update = function(body, response) {
     var sessionQuery = getSessionQuery(userId, sessionId);
 
     sessionQuery.first().then(function(session) {
-        if (body['include_games']) {
-            session.set('include_games', parseUtils.createListOfPointers('Game', body['include_games']));
-        }
         if (body['exclude_games']) {
             session.set('exclude_games', parseUtils.createListOfPointers('Game', body['exclude_games']));
-        }
-        if (body['include_tags']) {
-            session.set('include_tags', parseUtils.createListOfPointers('Tag', body['include_tags']));
         }
         if (body['exclude_tags']) {
             session.set('exclude_tags', parseUtils.createListOfPointers('Tag', body['exclude_tags']));
@@ -226,7 +216,7 @@ function getAllOpenSessionsQuery(userId) {
 
     var query = new Parse.Query(Session);
     query.include('user_id.steam_account.game_library.games.tags,' +
-        'include_games,exclude_games,include_tags,exclude_tags' +
+        'exclude_games,exclude_tags' +
         'user_id.steam_account.game_library.games');
     query.equalTo("user_id", userPtr);
     query.equalTo('status', 'OPEN');
@@ -240,7 +230,7 @@ function getSessionQuery(userId, sessionId) {
 
     var query = new Parse.Query(Session);
     query.include('user_id.steam_account.game_library.games.tags,' +
-        'include_games,exclude_games,include_tags,exclude_tags' +
+        'exclude_games,exclude_tags' +
         'user_id.steam_account.game_library.games');
     query.equalTo("user_id", userPtr);
     query.equalTo('objectId', sessionId);

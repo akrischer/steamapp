@@ -46,9 +46,7 @@ function Session(resource) {
     var steamAccount = resource.get('user_id').get('steam_account');
     var gameLibrary = steamAccount.get('game_library');
 
-    var include_tags = deepIncludeExclude ? Tag(resource.get('include_tags')) : resource.get('include_tags').map(function(t){return t.id;});
     var exclude_tags = deepIncludeExclude ? Tag(resource.get('exclude_tags')) : resource.get('exclude_tags').map(function(t){return t.id;});
-    var include_games = deepIncludeExclude ? Game(resource.get('include_games')) : resource.get('include_games').map(function(g){return g.id;});
     var exclude_games = deepIncludeExclude ? Game(resource.get('exclude_games')) : resource.get('exclude_games').map(function(g){return g.id;});
     var games = gameLibrary.get('games');
 
@@ -76,12 +74,11 @@ function Session(resource) {
                 return -1 !== excludeTagIds.indexOf(id);
             })
     });
+    // return object that'll actually be marshalled
     return {
         id: resource.id,
         status: resource.get('status'),
-        include_tags: include_tags,
         exclude_tags: exclude_tags,
-        include_games: include_games,
         exclude_games: exclude_games,
         games_count: games.length,
         games: Game(games)
