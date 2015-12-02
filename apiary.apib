@@ -198,18 +198,17 @@ Gets most up-to-date session.
 
         {
             "status": "OPEN",
-            "include_tags": [
+            "exclude_tags": [
                 {
                     "id": 1,
                     "display_tag": "short game",
                     "hidden_tag": "short"
                 }
             ],
-            "exclude_tags": [],
-            "include_games": [
+            "exclude_games": [
                 {
                     "id": 1,
-                    "name": "Call of Duty",
+                    "name": "Call of Duty 4: Modern Warfare",
                     "game_version": 2,
                     "achievements_count": 12,
                     "icon_url": "www.url.com",
@@ -221,25 +220,11 @@ Gets most up-to-date session.
                         }
                 }
             ],
-            "exclude_games": [],
-            "games_count": 3,
-            [
-                {
-                "id": 1,
-                "name": "Call of Duty",
-                "game_version": 2,
-                "achievements_count": 12,
-                "icon_url": "www.url.com",
-                "box_art_url": "www.url.com",
-                "sort_criteria": {
-                        "id": 1,
-                        "metacritic_score": 88,
-                        "price": 50.0
-                    }
-                },
+            "games_count": 2,
+            "games": [
                 {
                 "id": 3,
-                "name": "Dota2",
+                "name": "Dota 2",
                 "game_version": 1,
                 "achievements_count": 40,
                 "icon_url": "www.url.com",
@@ -252,7 +237,7 @@ Gets most up-to-date session.
                 },
                 {
                 "id": 12,
-                "name": "Bananarama",
+                "name": "Saints Row: The Third",
                 "game_version": 1,
                 "achievements_count": 0,
                 "icon_url": "www.url.com",
@@ -288,12 +273,10 @@ Creates a new session for the user. If a session is currently open, it closes th
 
         {
             "status": "OPEN",
-            "include_tags": [],
             "exclude_tags": [],
-            "include_games": [],
             "exclude_games": [],
             "games_count": 3,
-            [
+            "games": [
                 {
                 "id": 1,
                 "name": "Call of Duty",
@@ -322,7 +305,7 @@ Creates a new session for the user. If a session is currently open, it closes th
                 },
                 {
                 "id": 12,
-                "name": "Bananarama",
+                "name": "Saints Row: The Third",
                 "game_version": 1,
                 "achievements_count": 0,
                 "icon_url": "www.url.com",
@@ -339,12 +322,8 @@ Creates a new session for the user. If a session is currently open, it closes th
 ### Update Session [PUT]
 
 Update the session parameters:
-
-**include_games** : List of games (specified with game ids) to include
     
 **exclude_games** : List of games (specified with game ids) to exclude
-    
-**include_tags** : List of tags (specified with tag ids) to include
     
 **exclude_tags** : List of tags (specified with tag ids) to exclude
     
@@ -356,9 +335,7 @@ parameters, set it as an empty list -- [].
 + Request (application/json)
 
         {
-            "include_games": [1],
-            "exclude_games": [],
-            "include_tags": null,
+            "exclude_games": [1],
             "exclude_tags": [2]
         }
 
@@ -374,10 +351,10 @@ parameters, set it as an empty list -- [].
                     "hidden_tag": "co-op"
                 }
             ],
-            "include_games": [
+            "exclude_games": [
                 {
                     "id": 1,
-                    "name": "Call of Duty",
+                    "name": "Call of Duty 4: Modern Warfare",
                     "game_version": 2,
                     "achievements_count": 12,
                     "icon_url": "www.url.com",
@@ -389,22 +366,8 @@ parameters, set it as an empty list -- [].
                         }
                 }
             ],
-            "exclude_games": [],
-            "games_count": 3,
-            [
-                {
-                "id": 1,
-                "name": "Call of Duty",
-                "game_version": 2,
-                "achievements_count": 12,
-                "icon_url": "www.url.com",
-                "box_art_url": "www.url.com",
-                "sort_criteria": {
-                        "id": 1,
-                        "metacritic_score": 88,
-                        "price": 50.0
-                    }
-                },
+            "games_count": 2,
+            "games": [
                 {
                 "id": 3,
                 "name": "Dota2",
@@ -420,7 +383,7 @@ parameters, set it as an empty list -- [].
                 },
                 {
                 "id": 12,
-                "name": "Bananarama",
+                "name": "Saints Row: The Third",
                 "game_version": 1,
                 "achievements_count": 0,
                 "icon_url": "www.url.com",
