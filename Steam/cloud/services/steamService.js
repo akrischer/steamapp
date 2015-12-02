@@ -7,9 +7,6 @@ module.exports.getTagsForGame = function(gameAppId, response) {
     Parse.Cloud.httpRequest({
         method: "GET",
         url: "http://store.steampowered.com/app/" + "440",
-        //headers: {
-        //    Accept: "application/json"
-        //}
         success: function (httpResponse) {
             var jsonResponse = html2json(httpResponse.text);
 

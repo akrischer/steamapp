@@ -140,7 +140,7 @@ module.exports.update = function(body, response) {
  * @returns {Parse.Query} - Query object that will get all open sessions when ran
  */
 function getAllOpenSessionsQuery(userId) {
-    var userPtr = parseUtils.createPointer('User', userId);
+    var userPtr = parseUtils.createPointer('_User', userId);
 
     var query = new Parse.Query(Session);
     query.include('user_id.steam_account.game_library.games.tags,' +
@@ -154,7 +154,7 @@ function getAllOpenSessionsQuery(userId) {
 }
 
 function getSessionQuery(userId, sessionId) {
-    var userPtr = parseUtils.createPointer('User', userId);
+    var userPtr = parseUtils.createPointer('_User', userId);
 
     var query = new Parse.Query(Session);
     query.include('user_id.steam_account.game_library.games.tags,' +

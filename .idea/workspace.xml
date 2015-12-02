@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js" afterPath="$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/session.js" afterPath="$PROJECT_DIR$/Steam/cloud/session.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" afterPath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,17 +61,17 @@
         <entry file="file://$PROJECT_DIR$/Steam/cloud/session.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+              <caret line="156" column="45" selection-start-line="156" selection-start-column="45" selection-end-line="156" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="steamService.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="steamService.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/services/steamService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.20955315">
+              <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -79,7 +81,7 @@
         <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+              <caret line="48" column="52" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -117,11 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="parseUtils.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="parseUtils.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36671802">
-              <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -153,15 +155,15 @@
         <option value="$PROJECT_DIR$/Steam/Dependencies/html2json.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/Dependencies/html2json.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/Dependencies/htmlparser.js" />
-        <option value="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/utils/saveObject.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/main.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/game.js" />
-        <option value="$PROJECT_DIR$/Steam/cloud/session.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/criterion.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/question.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js" />
+        <option value="$PROJECT_DIR$/Steam/cloud/session.js" />
+        <option value="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
       </list>
     </option>
   </component>
@@ -722,12 +724,12 @@
       <workItem from="1448905919135" duration="12582000" />
       <workItem from="1448947374665" duration="906000" />
       <workItem from="1288761406777" duration="37000" />
-      <workItem from="1449008164803" duration="44657000" />
+      <workItem from="1449008164803" duration="44971000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83045000" />
+    <option name="totallyTimeSpent" value="83359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1664" y="93" width="1193" height="785" extended-state="0" />
@@ -1123,53 +1125,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/services/steamService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/session.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/question.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1183,8 +1143,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36671802">
-          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="52" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/session.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="156" column="45" selection-start-line="156" selection-start-column="45" selection-end-line="156" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/question.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/services/steamService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20955315">
+          <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
           <folding />
         </state>
       </provider>
