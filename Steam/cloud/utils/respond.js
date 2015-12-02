@@ -22,6 +22,7 @@
  */
 var _ = require('underscore');
 var images = require('cloud/utils/images.js');
+var parseUtils = require('cloud/utils/parseUtils.js');
 
 module.exports.success = function(response, resource, className) {
     // TODO: Please, find something better than eval
@@ -42,7 +43,7 @@ function handleArrays(resource, callback) {
 
 /**
  * @param resource:
- *      This is actually an object with a session and list of games:
+ *      This is actually a SessionResponse (see session.js) with a session and list of games:
  *      {
  *          session: <session>,
  *          games: <games>
@@ -52,40 +53,12 @@ function Session(resource) {
     return handleArrays(resource, _Session);
 
     function _Session(sessionAndGames) {
-        const deepExclude = false;
         var session = sessionAndGames.session;
         var games = sessionAndGames.games;
 
-        //var steamAccount = session.get('user_id').get('steam_account');
-        //var gameLibrary = steamAccount.get('game_library');
+        var exclude_tags = session.get('exclude_tags');/*Tag(exclude_tags_ptrs)*///;
+        var exclude_games = session.get('exclude_games');/*Game(exclude_game_ptrs)*///;
 
-        var exclude_tags = deepExclude ? Tag(session.get('exclude_tags')) : session.get('exclude_tags').map(function(t){return t.id;});
-        var exclude_games = deepExclude ? Game(session.get('exclude_games')) : session.get('exclude_games').map(function(g){return g.id;});
-
-        //// filter out all games in exclude_games list
-        //games = games.filter(function(game) {
-        //    return -1 === (exclude_games.map(function(g) {
-        //            return g.id;
-        //        }).indexOf(game.id));
-        //});
-        //// filter out all games that have tags in the exclude_tags list
-        //// first--list of tag ids
-        //var excludeTagIds = exclude_tags;
-        //if (deepExclude) {
-        //    excludeTagIds = exclude_tags.map(function(t) {
-        //        return t.id;
-        //    });
-        //}
-        //games = games.filter(function(game) {
-        //    var gameTagIds = game.get('tags').map(function(t) {
-        //        return t.id;
-        //    });
-        //    // True iff none of the game's tag ids are in excludeTagIds
-        //    return !gameTagIds.some(function(id) {
-        //        // True iff any of the game's tags are in excludeTagIds
-        //        return -1 !== excludeTagIds.indexOf(id);
-        //    })
-        //});
         // return object that'll actually be marshalled
         return {
             id: session.id,

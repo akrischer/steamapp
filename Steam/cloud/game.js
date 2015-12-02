@@ -50,30 +50,21 @@ module.exports.get = function(urlParams, response) {
 
 };
 
-module.exports.getAllGamesQuery = function(userId, excludeGamesArray, excludeTagsArray) {
+module.exports.getAllUserGamesQuery = function(userId, excludeGamesArray, excludeTagsArray) {
     var userPtr = parseUtils.createPointer('_User', userId);
     var gamePtrs = parseUtils.createListOfPointers('Game', excludeGamesArray);
     var tagPtrs = parseUtils.createListOfPointers('Tag', excludeTagsArray);
 
-    //// get all the games that should be blacklisted
-    //var blacklistGamesQuery = new Parse.Query(Parse.Object.extend('Game'));
-    //blacklistGamesQuery.containedIn('tags', tagPtrs);
-//
-    //// a list of UserGames whose 1 or more tags are in excludeTagsArray
-    //var blacklistedUserGamesQuery = new Parse.Query(UserGame);
-    //blacklistedUserGamesQuery.equalTo('user', userPtr);
-    //// get all UserGames that are in blacklisted games list
-    //blacklistedUserGamesQuery.matchesQuery('game', blacklistGamesQuery);
-
+    // get all the games that should be blacklisted
+    var blacklistGamesQuery = new Parse.Query(Parse.Object.extend('Game'));
+    blacklistGamesQuery.containedIn('tags', tagPtrs);
+    blacklistGamesQuery.equalTo('user', userPtr);
+    
     var userGamesQuery = new Parse.Query(UserGame);
     userGamesQuery.include('game');
     userGamesQuery.equalTo('user', userPtr);
     userGamesQuery.notContainedIn('game', gamePtrs);
-    // Basically, exclude any UserGames whose objectId matches the objectId from the blacklistedGamesQuery
-    //userGamesQuery.doesNotMatchKeyInQuery('objectId', 'objectId', blacklistedUserGamesQuery);
+    userGamesQuery.doesNotMatchKeyInQuery('objectId', 'objectId', blacklistGamesQuery);
 
-    var gamesQuery = new Parse.Query(Game);
-    gamesQuery.matchesKeyInQuery('objectId', 'game.objectId', userGamesQuery);
-
-    return gamesQuery;
+    return userGamesQuery;
 }

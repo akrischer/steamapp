@@ -5,6 +5,16 @@ var game = require('cloud/game.js');
 
 var Session = Parse.Object.extend('Session');
 
+/**
+ * Prototype for how to construct a session response
+ *  - session
+ *  - games
+ */
+function SessionResponse(session, games) {
+    this.session = session;
+    this.games = games;
+}
+
 // Before any session saves, it will go through this function.
 // If response.success, it saves as normal.
 // If response.error, it will fail the save.
@@ -37,19 +47,19 @@ module.exports.get = function(urlParams, response) {
 
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
 
-    var results = {
-        session: null,
-        games: null
-    };
+    var results = new SessionResponse(null, null);
 
     openSessionsQuery.first().then(function(session) {
         results.session = session;
 
-        var gamesQuery = game.getAllGamesQuery(userId, session.get('exclude_games'), session.get('exclude_tags'));
+        var userGamesQuery = game.getAllUserGamesQuery(userId, session.get('exclude_games'), session.get('exclude_tags'));
 
-        return gamesQuery.find();
-    }).then(function(games) {
-            results.games = games;
+        return userGamesQuery.find();
+    }).then(function(userGames) {
+            // We want Game objects not UserGame objects, so flatten UserGame -> Game
+            results.games = _.map(userGames, function(ug) {
+                return ug.get('game');
+            });
             // send the session coupled with the games
             respond.success(response, results, 'Session')
     }, function(error) {
@@ -71,6 +81,8 @@ module.exports.create = function(body, response) {
 
     // close all previous sessions. Return if save fails.
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
+
+    var results = new SessionResponse(null, null);
 
     openSessionsQuery.find().then(function(openSessions) {
         // https://parse.com/docs/js/guide#promises-promises-in-series
@@ -97,6 +109,17 @@ module.exports.create = function(body, response) {
         newSession.set('exclude_games', []);
         return newSession.save();
     }).then(function(session) {
+        results.session = session;
+
+        var userGamesQuery = game.getAllUserGamesQuery(userId, [], []);
+
+        return userGamesQuery.find();
+    }).then(function(userGames) {
+        // We want Game objects not UserGame objects, so flatten UserGame -> Game
+        results.games = _.map(userGames, function(ug) {
+            return ug.get('game');
+        });
+        // send the session coupled with the games
         respond.success(response, session, 'Session');
     }, function(error) {
         response.error(error);
@@ -124,14 +147,16 @@ module.exports.update = function(body, response) {
         return;
     }
 
+    var results = new SessionResponse(null, null);
+
     var sessionQuery = getSessionQuery(userId, sessionId);
 
     sessionQuery.first().then(function(session) {
         if (body['exclude_games']) {
-            session.set('exclude_games', parseUtils.createListOfPointers('Game', body['exclude_games']));
+            session.set('exclude_games', body['exclude_games']);
         }
         if (body['exclude_tags']) {
-            session.set('exclude_tags', parseUtils.createListOfPointers('Tag', body['exclude_tags']));
+            session.set('exclude_tags', body['exclude_tags']);
         }
         if (body['status']) {
             session.set('status', body['status']);
@@ -143,8 +168,18 @@ module.exports.update = function(body, response) {
             return Parse.Promise.as(session);
         }
     }).then(function(session) {
-        // success
-        respond.success(response, session, 'Session');
+        results.session = session;
+
+        var userGamesQuery = game.getAllUserGamesQuery(userId, session.get('exclude_games'), session.get('exclude_tags'));
+
+        return userGamesQuery.find();
+    }).then(function(userGames) {
+        // We want Game objects not UserGame objects, so flatten UserGame -> Game
+        results.games = _.map(userGames, function(ug) {
+            return ug.get('game');
+        });
+        // send the session coupled with the games
+        respond.success(response, results, 'Session');
     }, function(error) {
         response.error(error);
     })
@@ -158,9 +193,7 @@ function getAllOpenSessionsQuery(userId) {
     var userPtr = parseUtils.createPointer('_User', userId);
 
     var query = new Parse.Query(Session);
-    query.include('user_id.steam_account.game_library.games.tags,' +
-        'exclude_games,exclude_tags' +
-        'user_id.steam_account.game_library.games');
+    query.include('user_id.steam_account');
     query.equalTo("user_id", userPtr);
     query.equalTo('status', 'OPEN');
     query.descending('createdAt');
@@ -172,9 +205,7 @@ function getSessionQuery(userId, sessionId) {
     var userPtr = parseUtils.createPointer('_User', userId);
 
     var query = new Parse.Query(Session);
-    query.include('user_id.steam_account.game_library.games.tags,' +
-        'exclude_games,exclude_tags' +
-        'user_id.steam_account.game_library.games');
+    query.include('user_id.steam_account');
     query.equalTo("user_id", userPtr);
     query.equalTo('objectId', sessionId);
 
