@@ -14,10 +14,12 @@ module.exports.get = function(urlParams, response) {
       }).then(function(data) {
         //success
         response.success(response);
+      }, function(data) {
+        response.error("incorrect vanity url");
       });
     }, function(response) {
       //failure
-      console.error("vanityurl incorrect");
+      response.error("incorrect vanity url");
     });
 
 
