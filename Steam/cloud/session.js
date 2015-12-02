@@ -1,11 +1,12 @@
 var images = require('cloud/utils/images.js');
 var _ = require('underscore');
 var parseUtils = require('cloud/utils/parseUtils.js');
+var respond = require('cloud/utils/respond.js');
 
 var Session = Parse.Object.extend('Session');
 
 Parse.Cloud.beforeSave("Session", function(request, response) {
-    var body = request.params.body;
+    var body = request.params ? request.params.body : null;
     // if Session.status is being udpated...
     if (body && body.status) {
         // make sure it's a valid value
@@ -14,6 +15,8 @@ Parse.Cloud.beforeSave("Session", function(request, response) {
         } else {
             response.error("Session.status must either be 'OPEN' or 'CLOSED'.");
         }
+    } else {
+        response.success();
     }
 });
 
@@ -102,7 +105,8 @@ module.exports.get = function(urlParams, response) {
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
 
     openSessionsQuery.find().then(function(results) {
-        response.success(results[0]);
+        //response.success(results[0]);
+        respond.success(response, results[0])
     }, function(error) {
         console.log("ERROR: GET Session.\nurlParams = " + urlParams + "\nerror " + error.code + ": " + error.message);
         response.error("Error " + error.code + ": " + error.message);
@@ -136,7 +140,7 @@ module.exports.create = function(body, response) {
         return promise;
     }).then(function() {
         // user ptr to point to correct user
-        var userPtr = new Parse.Object.extend("User");
+        var userPtr = new Parse.User();
         userPtr.id = userId;
 
         // create, populate, and save new session
@@ -149,7 +153,7 @@ module.exports.create = function(body, response) {
         newSession.set('exclude_games', []);
         return newSession.save();
     }).then(function(session) {
-        response.success(session);
+        respond.success(response, session);
     }, function(error) {
         response.error(error);
     });
@@ -179,7 +183,7 @@ module.exports.update = function(body, response) {
     }
 
     var sessionQuery = getSessionQuery(userId, sessionId);
-    
+
     sessionQuery.first().then(function(session) {
         if (body['include_games']) {
             session.set('include_games', parseUtils.createListOfPointers('Game', body['include_games']));
@@ -218,10 +222,13 @@ function getAllOpenSessionsQuery(userId) {
     var userPtr = parseUtils.createPointer('User', userId);
 
     var query = new Parse.Query(Session);
-    query.include('user_id');
+    query.include('user_id.steam_account.game_library.games.tags,' +
+        'include_games,exclude_games,include_tags,exclude_tags' +
+        'user_id.steam_account.game_library.games');
     query.equalTo("user_id", userPtr);
     query.equalTo('status', 'OPEN');
     query.descending('createdAt');
+
     return query;
 }
 
@@ -229,8 +236,11 @@ function getSessionQuery(userId, sessionId) {
     var userPtr = parseUtils.createPointer('User', userId);
 
     var query = new Parse.Query(Session);
-    query.include('user_id');
+    query.include('user_id.steam_account.game_library.games.tags,' +
+        'include_games,exclude_games,include_tags,exclude_tags' +
+        'user_id.steam_account.game_library.games');
     query.equalTo("user_id", userPtr);
     query.equalTo('objectId', sessionId);
+
     return query;
 }
