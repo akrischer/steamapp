@@ -13,7 +13,7 @@ module.exports.get = function(urlParams, response) {
         url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + steamKey + "&steamids=" + steamid
       }).then(function(data) {
         //success
-        response.success(data);
+        response.success(data.data.response.players[0]);
       }, function(data) {
         //error
         response.error("incorrect vanity url");
