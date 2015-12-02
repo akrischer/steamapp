@@ -23,8 +23,7 @@
 var _ = require('underscore');
 var images = require('cloud/utils/images.js');
 
-module.exports.success = function(response, resource) {
-    var className = Array.isArray(resource) && resource.length > 0 ? resource[0].className : resource.className;
+module.exports.success = function(response, resource, className) {
     // TODO: Please, find something better than eval
     response.success(eval(className)(resource));
 };

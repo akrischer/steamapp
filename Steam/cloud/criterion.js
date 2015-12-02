@@ -9,7 +9,7 @@ module.exports.get = function(urlParams, response) {
     query.descending('createdAt');
 
     query.find().then(function(resources) {
-        respond.success(response, resources)
+        respond.success(response, resources, 'Criterion')
     }, function(error) {
         response.error(error);
     });

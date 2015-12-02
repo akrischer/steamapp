@@ -1,4 +1,3 @@
-var images = require('cloud/utils/images.js');
 var _ = require('underscore');
 var parseUtils = require('cloud/utils/parseUtils.js');
 var respond = require('cloud/utils/respond.js');
@@ -23,76 +22,6 @@ Parse.Cloud.beforeSave("Session", function(request, response) {
     }
 });
 
-var stubbedSession = {
-    "status": "OPEN",
-    "include_tags": [
-        {
-            "id": 1,
-            "display_tag": "short game",
-            "hidden_tag": "short"
-        }
-    ],
-    "exclude_tags": [],
-    "include_games": [
-        {
-            "id": 1,
-            "name": "Call of Duty 4: Modern Warfare",
-            "game_version": 2,
-            "achievements_count": 12,
-            "icon_url": "www.url.com",
-            "box_art_url": "www.url.com",
-            "sort_criteria": {
-                "id": 1,
-                "metacritic_score": 88,
-                "price": 50.0
-            }
-        }
-    ],
-    "exclude_games": [],
-    "games_count": 3,
-    "games": [
-        {
-            "id": 1,
-            "name": "Call of Duty 4: Modern Warfare",
-            "game_version": 2,
-            "achievements_count": 12,
-            "icon_url": images.getSteamGameImageUrl("7940", "b40c43b0b14b7e124553e0220581a1b9ef8e38bf"),
-            "box_art_url": images.getSteamGameImageUrl("7940", "a4bd2ef1a993631ca1290a79bd0dd090349ff3e2"),
-            "sort_criteria": {
-                "id": 1,
-                "metacritic_score": 88,
-                "price": 50.0
-            }
-        },
-        {
-            "id": 3,
-            "name": "Dota 2",
-            "game_version": 1,
-            "achievements_count": 40,
-            "icon_url": images.getSteamGameImageUrl("570", "0bbb630d63262dd66d2fdd0f7d37e8661a410075"),
-            "box_art_url": images.getSteamGameImageUrl("570", "d4f836839254be08d8e9dd333ecc9a01782c26d2"),
-            "sort_criteria": {
-                "id": 2,
-                "metacritic_score": 94,
-                "price": 0
-            }
-        },
-        {
-            "id": 12,
-            "name": "Saints Row: The Third",
-            "game_version": 1,
-            "achievements_count": 0,
-            "icon_url": images.getSteamGameImageUrl("55230", "ec83645f13643999e7c91da75d418053d6b56529"),
-            "box_art_url": images.getSteamGameImageUrl("55230", "1129528455a8b297fb6404cbb90e802a62881b11"),
-            "sort_criteria": {
-                "id": 1,
-                "metacritic_score": null,
-                "price": 50.0
-            }
-        }
-    ]
-};
-
 module.exports.get = function(urlParams, response) {
     var userId = urlParams['userId'];
 
@@ -108,8 +37,7 @@ module.exports.get = function(urlParams, response) {
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
 
     openSessionsQuery.find().then(function(results) {
-        //response.success(results[0]);
-        respond.success(response, results[0])
+        respond.success(response, results[0], 'Session');
     }, function(error) {
         console.log("ERROR: GET Session.\nurlParams = " + urlParams + "\nerror " + error.code + ": " + error.message);
         response.error("Error " + error.code + ": " + error.message);
@@ -154,7 +82,7 @@ module.exports.create = function(body, response) {
         newSession.set('exclude_games', []);
         return newSession.save();
     }).then(function(session) {
-        respond.success(response, session);
+        respond.success(response, session, 'Session');
     }, function(error) {
         response.error(error);
     });
@@ -201,7 +129,7 @@ module.exports.update = function(body, response) {
         }
     }).then(function(session) {
         // success
-        respond.success(response, session);
+        respond.success(response, session, 'Session');
     }, function(error) {
         response.error(error);
     })

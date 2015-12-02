@@ -17,7 +17,7 @@ module.exports.get = function(urlParams, response) {
     }
 
     query.find().then(function(questions) {
-        respond.success(response, questions);
+        respond.success(response, questions, 'Question');
     }, function(error) {
         response.error(error);
     });
