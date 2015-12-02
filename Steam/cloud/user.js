@@ -1,4 +1,4 @@
-var SteamService = require('services/SteamService.js');
+var SteamService = require('services/steamService.js');
 
 module.exports.get = function(urlParams, response) {
     var steamid;
