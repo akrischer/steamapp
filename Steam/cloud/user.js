@@ -1,16 +1,16 @@
-var SteamService = require('services/steamService.js');
+const steamKey = "E812073DDEB4C433E29A9F198A815CE0";
 
 module.exports.get = function(urlParams, response) {
     var steamid;
     Parse.Cloud.httpRequest({
       method: "GET",
-      url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + SteamService.steamKey + "&vanityurl=" + urlParams.userId
+      url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + steamKey + "&vanityurl=" + urlParams.userId
     }).then(function(response) {
       //success
       steamid = response.steamid;
       Parse.Cloud.httpRequest({
         method: "GET",
-        url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + SteamService.steamKey + "&steamids=" + steamid
+        url: "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + steamKey + "&steamids=" + steamid
       }).then(function(data) {
         //success
         response.success(response);
