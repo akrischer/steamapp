@@ -447,11 +447,15 @@ _include_ or _exclude_ tags.
 ### Get Questions [GET]
 
 Get questions for different criteria. By default, all enabled questions for all enabled criteria
-will be returned. Filter returned questions by URL Parameter **include_criteria**
+will be returned. Filter returned questions by URL Parameter **include_only**
 
 E.g.
 
-"/v1/questions?include_criteria=[1,4,5]"
+"/v1/questions?include_only=[1,4,5]"
+
+Note: **include_only** should be part of the request's `body.urlParams` and
+_not_ part of the actual uri.
+
 
 You should have all criteria ids through GET /v1/criteria
 
