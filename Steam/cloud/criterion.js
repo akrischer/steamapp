@@ -1,4 +1,3 @@
-var images = require('cloud/utils/images.js');
 var respond = require('cloud/utils/respond.js');
 
 var Criterion = Parse.Object.extend('Criterion');
@@ -14,8 +13,4 @@ module.exports.get = function(urlParams, response) {
     }, function(error) {
         response.error(error);
     });
-};
-
-module.exports.getIconUrl = function(criterionName) {
-    return images.getBaseDomainUrl('criterion') + "/" + criterionName + ".png";
 };
