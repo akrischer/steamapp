@@ -1,4 +1,8 @@
 var images = require('cloud/utils/images.js');
+var parseUtils = require('cloud/utils/parseUtils.js');
+
+var Game = Parse.Object.extend('Game');
+var UserGame = Parse.Object.extend('UserGame');
 
 module.exports.get = function(urlParams, response) {
     var games = [
@@ -45,3 +49,21 @@ module.exports.get = function(urlParams, response) {
     response.success(games);
 
 };
+
+module.exports.getAllGamesQuery = function(userId, excludeGamesArray, excludeTagsArray) {
+    var userPtr = parseUtils.createPointer('_User', userId);
+    var gamePtrs = parseUtils.createListOfPointers('Game', excludeGamesArray);
+    var tagPtrs = parseUtils.createListOfPointers('Tag', excludeTagsArray);
+
+    // a list of games whose 1 or more tags are in excludeTagsArray
+    var blacklistedGamesQuery = new Parse.Query(UserGame);
+    blacklistedGamesQuery.contains('game.tag', tagPtrs);
+
+    var query = new Parse.Query(UserGame);
+    query.equalTo('user', userPtr);
+    query.notContainedIn('game', gamePtrs);
+    // Basically, exclude any UserGames whose objectId matches the objectId from the blacklistedGamesQuery
+    query.doesNotMatchKeyInQuery('objectId', 'objectId', blacklistedGamesQuery);
+
+    return query;
+}

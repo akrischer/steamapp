@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var parseUtils = require('cloud/utils/parseUtils.js');
 var respond = require('cloud/utils/respond.js');
+var game = require('cloud/game.js');
 
 var Session = Parse.Object.extend('Session');
 
@@ -36,12 +37,26 @@ module.exports.get = function(urlParams, response) {
 
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
 
-    openSessionsQuery.find().then(function(results) {
-        respond.success(response, results[0], 'Session');
+    var results = {
+        session: null,
+        games: null
+    };
+
+    openSessionsQuery.first().then(function(session) {
+        results.session = session;
+
+        var gamesQuery = game.getAllGamesQuery(userId, session.get('exclude_games'), session.get('exclude_tags'));
+
+        return gamesQuery.find();
+    }).then(function(games) {
+            results.games = games;
+            // send the session coupled with the games
+            respond.success(response, results, 'Session')
     }, function(error) {
-        console.log("ERROR: GET Session.\nurlParams = " + urlParams + "\nerror " + error.code + ": " + error.message);
-        response.error("Error " + error.code + ": " + error.message);
-    });
+            console.log("ERROR: GET Session.\nurlParams = " + urlParams + "\nerror " + error.code + ": " + error.message);
+            response.error("Error " + error.code + ": " + error.message);
+        }
+    )
 };
 
 module.exports.create = function(body, response) {
