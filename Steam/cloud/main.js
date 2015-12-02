@@ -23,7 +23,7 @@ Parse.Cloud.define("serve", function(request, response) {
     var uri = request.params.uri;
     var verb = request.params.verb;
     var urlParams = request.params.urlParams ? request.params.urlParams : {};
-    var body = request.params.body ? request.params.urlParams : {};
+    var body = request.params.body ? request.params.body : {};
 
     // because no elvis operator in js...
     var uriResources = getResourceIds(uri);
@@ -92,15 +92,15 @@ Parse.Cloud.define("serve", function(request, response) {
 
 function getResourceIds(uri) {
     var resourceIds = {};
-    var sessionIdRegex = /sessions\/(.*(?=\/)).*/;
-    var userIdRegex = /users\/(.*(?=\/)).*/;
+    var sessionIdRegex = /(?:\/sessions\/)([0-9a-zA-Z]+)/;
+    var userIdRegex = /(?:\/users\/)([0-9a-zA-Z]+)/;
 
     if (sessionIdRegex.test(uri)) {
-        //console.log("Found resource id for session: " + uri.match(sessionIdRegex)[1]);
+        console.log("Found resource id for session: " + uri.match(sessionIdRegex)[1]);
         resourceIds["sessionId"] = uri.match(sessionIdRegex)[1];
     }
     if (userIdRegex.test(uri)) {
-        //console.log("Found resource id for user: " + uri.match(userIdRegex)[1]);
+        console.log("Found resource id for user: " + uri.match(userIdRegex)[1]);
         resourceIds["userId"] = uri.match(userIdRegex)[1];
     }
 

@@ -1,16 +1,21 @@
 var images = require('cloud/utils/images.js');
 var _ = require('underscore');
+var parseUtils = require('cloud/utils/parseUtils.js');
 
 var Session = Parse.Object.extend('Session');
 
-const Status = {
-    CLOSED: 1,
-    OPEN: 2,
-    properties : {
-        CLOSED: { name: 'CLOSED' },
-        OPEN: { name: 'OPEN' }
+Parse.Cloud.beforeSave("Session", function(request, response) {
+    var body = request.params.body;
+    // if Session.status is being udpated...
+    if (body && body.status) {
+        // make sure it's a valid value
+        if (body.status === 'OPEN' || body.status === 'CLOSED') {
+            response.success();
+        } else {
+            response.error("Session.status must either be 'OPEN' or 'CLOSED'.");
+        }
     }
-};
+});
 
 var stubbedSession = {
     "status": "OPEN",
@@ -150,8 +155,59 @@ module.exports.create = function(body, response) {
     });
 };
 
+/**
+ * Possible updatable fields:
+ *      include_games
+ *      exclude_games
+ *      include_tags
+ *      exclude_tags
+ *      status
+ *
+ * Note: fields only updated if non-null!
+ * @param body
+ * @param response
+ */
 module.exports.update = function(body, response) {
-    response.success(stubbedSession);
+    var userId = body['userId'];
+    var sessionId = body['sessionId'];
+
+    if (!userId) {
+        // NOT FOUND
+        response.status = 404;
+        response.error("Error: No user ID given -- '" + body['userId'] + "'");
+        return;
+    }
+
+    var sessionQuery = getSessionQuery(userId, sessionId);
+    
+    sessionQuery.first().then(function(session) {
+        if (body['include_games']) {
+            session.set('include_games', parseUtils.createListOfPointers('Game', body['include_games']));
+        }
+        if (body['exclude_games']) {
+            session.set('exclude_games', parseUtils.createListOfPointers('Game', body['exclude_games']));
+        }
+        if (body['include_tags']) {
+            session.set('include_tags', parseUtils.createListOfPointers('Tag', body['include_tags']));
+        }
+        if (body['exclude_tags']) {
+            session.set('exclude_tags', parseUtils.createListOfPointers('Tag', body['exclude_tags']));
+        }
+        if (body['status']) {
+            session.set('status', body['status']);
+        }
+
+        if (session.dirty()) {
+            return session.save();
+        } else {
+            return Parse.Promise.as(session);
+        }
+    }).then(function(session) {
+        // success
+        response.success(session);
+    }, function(error) {
+        response.error(error);
+    })
 };
 
 /**
@@ -159,13 +215,22 @@ module.exports.update = function(body, response) {
  * @returns {Parse.Query} - Query object that will get all open sessions when ran
  */
 function getAllOpenSessionsQuery(userId) {
-    var userPtr = new Parse.Object.extend("User");
-    userPtr.id = userId;
+    var userPtr = parseUtils.createPointer('User', userId);
 
     var query = new Parse.Query(Session);
     query.include('user_id');
     query.equalTo("user_id", userPtr);
     query.equalTo('status', 'OPEN');
     query.descending('createdAt');
+    return query;
+}
+
+function getSessionQuery(userId, sessionId) {
+    var userPtr = parseUtils.createPointer('User', userId);
+
+    var query = new Parse.Query(Session);
+    query.include('user_id');
+    query.equalTo("user_id", userPtr);
+    query.equalTo('objectId', sessionId);
     return query;
 }
