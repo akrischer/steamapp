@@ -9,9 +9,7 @@ module.exports.createPointer = function(className, objectId) {
 };
 
 module.exports.createListOfPointers = function(className, objectIdList) {
-    var pointers = [];
-    for (var i = 0; i < objectIdList.length; i++) {
-        pointers.push(this.createPointer(className, objectIdList[i]));
-    }
-    return pointers;
+    return objectIdList.map(function(id) {
+        return this.createPointer(className, id);
+    });
 };
