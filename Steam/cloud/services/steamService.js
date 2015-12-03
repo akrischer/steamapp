@@ -1,20 +1,41 @@
 // TODO: This stuff should really be stored in a config
 const steamKey = "E812073DDEB4C433E29A9F198A815CE0";
+const steamBaseUrl = "http://api.steampowered.com/";
 
 var h2j = require('cloud/Dependencies/html2json.js');
 
-module.exports.getTagsForGame = function(gameAppId, response) {
+module.exports.getOwnedGames = function(parseUser) {
+    var url = steamBaseUrl + '/IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
+    url += 'include_appinfo=1&include_played_free_games=1&format=json';
+    url += '&steamid=' + parseUser.steam_id;
+    Parse.Cloud.httpRequest({
+        method: "GET",
+        url: url
+    }).then(function(response) {
+        return response.games;
+    }, function(error) {
+        return error;
+    })
+};
+
+/**
+ * Returns tags for a specific steam game (appid):
+ *      [
+ *          {
+ *              icon_url: ...,
+ *              name: ...
+ *          }
+ *      ]
+ * @param gameAppId
+ */
+module.exports.getTagsForGame = function(gameAppId) {
     Parse.Cloud.httpRequest({
         method: "GET",
         url: "http://store.steampowered.com/app/" + "440",
-        success: function (httpResponse) {
-            var jsonResponse = html2json(httpResponse.text);
+    }).then(function(response) {
+        var jsonResponse = html2json(httpResponse.text);
 
-
-            response.success({
-                steam_tags: getSteamTags(jsonResponse)
-            });
-        }
+        return getSteamTags(jsonResponse);
     });
 };
 
