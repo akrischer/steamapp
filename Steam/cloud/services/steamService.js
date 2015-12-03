@@ -4,18 +4,19 @@ const steamBaseUrl = "http://api.steampowered.com/";
 
 var h2j = require('cloud/Dependencies/html2json.js');
 
-module.exports.getOwnedGames = function(parseUser) {
-    var url = steamBaseUrl + '/IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
-    url += 'include_appinfo=1&include_played_free_games=1&format=json';
-    url += '&steamid=' + parseUser.steam_id;
-    Parse.Cloud.httpRequest({
+module.exports.getOwnedGames = function(steamAccount) {
+    var url = steamBaseUrl + 'IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
+    url += '&include_appinfo=1&include_played_free_games=1&format=json';
+    url += '&steamid=' + steamAccount.get('steam_id');
+    console.log("Steam url: " + url);
+    return Parse.Cloud.httpRequest({
         method: "GET",
         url: url
     }).then(function(response) {
         return response.games;
     }, function(error) {
         return error;
-    })
+    });
 };
 
 /**
