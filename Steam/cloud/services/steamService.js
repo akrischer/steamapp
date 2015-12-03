@@ -13,7 +13,7 @@ module.exports.getOwnedGames = function(steamAccount) {
         method: "GET",
         url: url
     }).then(function(response) {
-        return response.games;
+        return response.data.response.games;
     }, function(error) {
         return error;
     });
@@ -30,34 +30,37 @@ module.exports.getOwnedGames = function(steamAccount) {
  * @param gameAppId
  */
 module.exports.getTagsForGame = function(gameAppId) {
-    Parse.Cloud.httpRequest({
+    return Parse.Cloud.httpRequest({
         method: "GET",
-        url: "http://store.steampowered.com/app/" + "440",
+        url: "http://store.steampowered.com/app/" + '440'//gameAppId
     }).then(function(response) {
-        var jsonResponse = html2json(httpResponse.text);
+        var jsonResponse = html2json(response.text);
 
-        return getSteamTags(jsonResponse);
+        return Parse.Promise.as(getSteamTags(jsonResponse));
     });
 };
 
 function html2json(html) {
-    //return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''))
-    return h2j.html2json(html, true)
+    return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''));
+    //return h2j.html2json(html, true)
 }
 
 // get Steam-defined steam tags given an html response for a game
 function getSteamTags(jsonifiedHtml) {
     var tags = [];
-    var steamTagNode = findJsonNode("category_block", jsonifiedHtml, true)
+    var steamTagNode = findJsonNode("category_block", jsonifiedHtml, true);
 
     for (var i = 0; i < steamTagNode.child.length; i++) {
         var ele = steamTagNode.child[i];
-        var tagName = ele.text.match(/>.*<\/a>$/)[0].replace('>','').replace('</a>','');
-        var newTag = {
-            icon_url: ele.child[0].child[0].attr.src,
-            name: tagName
-        };
-        tags.push(newTag);
+        var tagMatch = ele.text.match(/>.*<\/a>/);
+        if (tagMatch) {
+            var tagName = ele.text.match(/>.*<\/a>/)[0].replace('>','').replace("</a>",'');
+            var newTag = {
+                icon_url: ele.child[0].child[0].attr.src,
+                name: tagName
+            };
+            tags.push(newTag);
+        }
     }
 
     return tags;
@@ -73,7 +76,6 @@ function findJsonNode(id, currentNode, returnParent, parent) {
         result;
 
     if (id == currentNode.id) {
-        console.log("findJsonNode -- node found!\n" + "parent = " + parent + "\nresult = " + currentNode);
         return returnParent ? parent : currentNode;
     } else {
 
@@ -92,7 +94,6 @@ function findJsonNode(id, currentNode, returnParent, parent) {
 
             // Return the result if the node has been found
             if (result !== false) {
-                console.log("findJsonNode -- node found!\n" + "result = " + result);
                 return result;
             }
         }

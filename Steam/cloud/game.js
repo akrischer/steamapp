@@ -35,7 +35,7 @@ module.exports.get = function(urlParams, response) {
             console.log("!user.all_games_in_db_verified");
             // get games from steam
             return steamService.getOwnedGames(steamAccount).then(function (games) {
-                console.log("returned from steam: " + games);
+                //console.log("returned from steam: " + games);
                 if (Array.isArray(games)) {
                     var promises = [];
                     console.log("games array from steam length: " + games.length);
@@ -44,27 +44,31 @@ module.exports.get = function(urlParams, response) {
                             // add Game row if not there (and save it's id)
                             var gameQuery = new Parse.Query(Game);
                             gameQuery.equalTo('app_id', game.appid);
+                            var _game = null;
 
                             // execute query chain
                             var promise = gameQuery.first().then(function (foundGame) {
-                                if (foundGame) {
+                                // we need to save our result and then call getOrCreateTags, and THEN construct our game.
+                                _game = foundGame;
+                                return steamService.getTagsForGame(game.appid);
+                            }).then(function(steamTags) {
+                                return getOrCreateTags(steamTags);
+                            }).then(function(tags) {
+                                if (_game) {
                                     console.log("found game in db already!");
-                                    return Parse.Promise.as(foundGame);
+                                    return Parse.Promise.as(_game);
                                 } else {
-                                    console.log("creating new game '" + game.name + "'");
+                                    console.log("creating new game '" + game.name + "' with appid '" + game.appid + "'");
                                     // create new game object
                                     var newGame = new Game();
                                     newGame.set('app_id', game.appid);
                                     newGame.set('name', game.name);
                                     newGame.set('icon_url', game.img_icon_url);
                                     newGame.set('box_art_url', game.img_logo_url);
-                                    newGame.set('tags', getOrCreateTags(steamService.getTagsForGame(game.appid)));
+                                    newGame.set('tags', tags);
                                     return newGame.save();
                                 }
                             }).then(function (newGame) {
-                                // add game to results array
-                                results.push(newGame);
-
                                 // add UserGame row if not there
                                 var gamePtr = parseUtils.createPointer('Game', newGame.id);
                                 var userGameQuery = new Parse.Query(UserGame);
@@ -123,21 +127,24 @@ function getGamesFromSteam() {
 
 // returns list of pointers to tags (or tag ids)
 function getOrCreateTags(jsonTags) {
-    return _.map(jsonTags, function(tag) {
-        var tagQuery = new Parse.Query(Tag);
-        tagQuery.equalTo('name', tag.name);
+    return Parse.Promise.as().then(function() {
+        var list = _.map(jsonTags, function(tag) {
+            var tagQuery = new Parse.Query(Tag);
+            tagQuery.equalTo('name', tag.name);
 
-        tagQuery.first().then(function(foundTag) {
-            if (foundTag) {
-                return parseUtils.createPointer('Tag', foundTag.id);
-            } else {
-                // create a new tag!
-                var newTag = new Tag();
-                newTag.set('name', tag.name);
-                newTag.set('icon_url', tag.icon_url);
-                return newTag.save();
-            }
+            tagQuery.first().then(function(foundTag) {
+                if (foundTag) {
+                    return parseUtils.createPointer('Tag', foundTag.id);
+                } else {
+                    // create a new tag!
+                    var newTag = new Tag();
+                    newTag.set('name', tag.name);
+                    newTag.set('icon_url', tag.icon_url);
+                    return newTag.save();
+                }
+            });
         });
+        return Parse.Promise.as(list);
     });
 }
 
