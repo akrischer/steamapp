@@ -37,68 +37,27 @@ module.exports.get = function(urlParams, response) {
             return steamService.getOwnedGames(steamAccount).then(function (games) {
                 //console.log("returned from steam: " + games);
                 if (Array.isArray(games)) {
-                    var promises = [];
                     console.log("games array from steam length: " + games.length);
+                    var results = [];
                     // foreach game:
                     _.each(games, function (game) {
-                            // add Game row if not there (and save it's id)
-                            var gameQuery = new Parse.Query(Game);
-                            gameQuery.equalTo('app_id', game.appid);
-                            var _game = null;
 
-                            // execute query chain
-                            var promise = gameQuery.first().then(function (foundGame) {
-                                // we need to save our result and then call getOrCreateTags, and THEN construct our game.
-                                _game = foundGame;
-                                return steamService.getTagsForGame(game.appid);
-                            }).then(function(steamTags) {
-                                return getOrCreateTags(steamTags);
-                            }).then(function(tags) {
-                                if (_game) {
-                                    console.log("found game in db already!");
-                                    return Parse.Promise.as(_game);
-                                } else {
-                                    console.log("creating new game '" + game.name + "' with appid '" + game.appid + "'");
-                                    // create new game object
-                                    var newGame = new Game();
-                                    newGame.set('app_id', game.appid);
-                                    newGame.set('name', game.name);
-                                    newGame.set('icon_url', game.img_icon_url);
-                                    newGame.set('box_art_url', game.img_logo_url);
-                                    newGame.set('tags', tags);
-                                    return newGame.save();
-                                }
-                            }).then(function (newGame) {
-                                // add UserGame row if not there
-                                var gamePtr = parseUtils.createPointer('Game', newGame.id);
-                                var userGameQuery = new Parse.Query(UserGame);
-                                userGameQuery.include('game');
-                                userGameQuery.equalTo('game', gamePtr);
-                                userGameQuery.equalTo('user', parseUtils.createPointer('_User', userId));
-                                return userGameQuery.first();
-                            }).then(function (foundUserGame) {
-                                if (foundUserGame) {
-                                    return foundUserGame.get('game');
-                                } else {
-                                    // create a new UserGame
-                                    var newUserGame = new UserGame();
-                                    newUserGame.set('user', parseUtils.createPointer('_User', userId));
-                                    newUserGame.set('game', foundUserGame.get('game'));
-                                    return foundUserGame.save();
-                                }
-                            });
-                        promises.push(promise);
+                        steamService.getTagsForGame(game.appid).then(function (steamTags) {
+                            return getOrCreateTags(steamTags);
+                        }).then(function (tags) {
+                            var newlyMadeSteamGame = {
+                                app_id: game.appid,
+                                name: game.name,
+                                icon_url: game.img_icon_url,
+                                box_art_url: game.img_logo_url,
+                                tags: tags
+                            };
+                            results.push(newlyMadeSteamGame);
+                        });
                     });
-                    return Parse.Promise.when(promises);
+                    return Parse.Promise.as(games);
                 }
-            }, function(error) {
-                console.log("STEAM ERROR! " + error.message);
-            }).then(function(userGames) {
-                var games = _.map(userGames, function(ug) {
-                    return ug.get('game');
-                });
-                return Parse.Promise.as(games);
-            });
+            })
         } else {
             console.log("all games for user verified!");
             // all games are verified to be in db!
@@ -118,10 +77,6 @@ module.exports.get = function(urlParams, response) {
     }, function(error) {
         response.error(error);
     })
-
-};
-
-function getGamesFromSteam() {
 
 }
 
