@@ -6,7 +6,7 @@ var h2j = require('cloud/Dependencies/html2json.js');
 
 module.exports.getOwnedGames = function(steamAccount) {
     var url = steamBaseUrl + 'IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
-    url += '&include_appinfo=1&include_played_free_games=1&format=json';
+    url += '&include_appinfo=1&include_played_free_games=0&format=json';
     url += '&steamid=' + steamAccount.get('steam_id');
     console.log("Steam url: " + url);
     return Parse.Cloud.httpRequest({
@@ -20,7 +20,7 @@ module.exports.getOwnedGames = function(steamAccount) {
 };
 
 /**
- * Returns tags for a specific steam game (appid):
+ * Returns promise for tags for a specific steam game (appid):
  *      [
  *          {
  *              icon_url: ...,
@@ -30,26 +30,30 @@ module.exports.getOwnedGames = function(steamAccount) {
  * @param gameAppId
  */
 module.exports.getTagsForGame = function(gameAppId) {
+    //console.log("Getting tags for appid " + gameAppId);
     return Parse.Cloud.httpRequest({
         method: "GET",
-        url: "http://store.steampowered.com/app/" + '440'//gameAppId
+        url: "http://store.steampowered.com/app/" + "107410"
     }).then(function(response) {
+        //console.log("getting tags for game '" + gameAppId + "'");
         var jsonResponse = html2json(response.text);
 
         return Parse.Promise.as(getSteamTags(jsonResponse));
+    }, function(error) {
+        console.log("Error getting tags for app " + gameAppId);
     });
 };
 
 function html2json(html) {
-    return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''));
-    //return h2j.html2json(html, true)
+    //return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''));
+    return h2j.html2json(html, true)
 }
 
 // get Steam-defined steam tags given an html response for a game
 function getSteamTags(jsonifiedHtml) {
     var tags = [];
     var steamTagNode = findJsonNode("category_block", jsonifiedHtml, true);
-
+    console.log(steamTagNode);
     for (var i = 0; i < steamTagNode.child.length; i++) {
         var ele = steamTagNode.child[i];
         var tagMatch = ele.text.match(/>.*<\/a>/);

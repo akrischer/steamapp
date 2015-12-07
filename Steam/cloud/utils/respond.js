@@ -82,6 +82,9 @@ function Game(resource) {
             achievements_count: game.get('achievements_count'),
             icon_url: game.get('icon_url'),
             box_art_url: game.get('box_art_url'),
+            tags: Tag(game.get('tags')),
+            from_steam: game.get('from_steam'),
+            app_id: game.get('app_id'),
             // TODO: Sort criteria implementation
             sort_criteria: {}
         }
