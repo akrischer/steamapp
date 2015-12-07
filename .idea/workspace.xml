@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/cloud/utils/errors.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/jobs/userDataJobs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/.parse.exe.old" afterPath="$PROJECT_DIR$/Steam/.parse.exe.old" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/game.js" afterPath="$PROJECT_DIR$/Steam/cloud/game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" afterPath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" afterPath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="C:\Users\Andrew\Documents\steamapp\Steam\jobs\userDataJobs.js" afterPath="$PROJECT_DIR$/Steam/cloud/jobs/userDataJobs.js" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -104,10 +98,10 @@
         </entry>
       </file>
       <file leaf-file-name="userDataJobs.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Steam/jobs/userDataJobs.js">
+        <entry file="file://$PROJECT_DIR$/Steam/cloud/jobs/userDataJobs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.2056738">
-              <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.40189126">
+              <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -347,24 +341,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="jobs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="steamapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="steamapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Steam" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="cloud" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -437,8 +413,8 @@
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\cloud" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Andrew\Documents\steamapp\Steam\public\images\domain\criterion" />
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\cloud" />
+      <recent name="C:\Users\Andrew\Documents\steamapp\Steam\public\images\domain\criterion" />
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\Dependencies" />
     </key>
   </component>
@@ -728,12 +704,12 @@
       <workItem from="1448947374665" duration="906000" />
       <workItem from="1288761406777" duration="37000" />
       <workItem from="1449008164803" duration="47320000" />
-      <workItem from="1449423704632" duration="18983000" />
+      <workItem from="1449423704632" duration="19359000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104691000" />
+    <option name="totallyTimeSpent" value="105067000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="125" y="13" width="1313" height="822" extended-state="0" />
@@ -1184,10 +1160,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/jobs/userDataJobs.js">
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/jobs/userDataJobs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2056738">
-          <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.40189126">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
           <folding />
         </state>
       </provider>
