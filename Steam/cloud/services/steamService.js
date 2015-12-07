@@ -3,6 +3,7 @@ const steamKey = "E812073DDEB4C433E29A9F198A815CE0";
 const steamBaseUrl = "http://api.steampowered.com/";
 
 var h2j = require('cloud/Dependencies/html2json.js');
+var _ = require('underscore');
 
 module.exports.getOwnedGames = function(steamAccount) {
     var url = steamBaseUrl + 'IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
@@ -30,19 +31,61 @@ module.exports.getOwnedGames = function(steamAccount) {
  * @param gameAppId
  */
 module.exports.getTagsForGame = function(gameAppId) {
+    var appid = gameAppId;
     //console.log("Getting tags for appid " + gameAppId);
     return Parse.Cloud.httpRequest({
         method: "GET",
-        url: "http://store.steampowered.com/app/" + "107410"
+        url: "http://store.steampowered.com/app/" + appid
     }).then(function(response) {
         //console.log("getting tags for game '" + gameAppId + "'");
         var jsonResponse = html2json(response.text);
 
         return Parse.Promise.as(getSteamTags(jsonResponse));
     }, function(error) {
-        console.log("Error getting tags for app " + gameAppId);
+        console.log("Error getting tags for app " + appid);
+        _.each(Object.keys(error), function(key) {
+            console.log("'" + key + "': '" + error[key] + "'");
+        });
+        // TODO: Better way to deal with redirects/bypassing age verification?
+        if (error.status == 302) {
+            return bypassAgeGatePromise(error, appid);
+        }
     });
 };
+
+function bypassAgeGatePromise(error, appid) {
+    return Parse.Cloud.httpRequest({
+        method: "GET",
+        url: error.headers.Location
+    }).then(function(response) {
+        // bypass age verification gate
+        return Parse.Cloud.httpRequest({
+            method: "POST",
+            url: "http://store.steampowered.com/agecheck/app/" + appid,
+            followRedirects: true,
+            body: {
+                snr: '1_agecheck_agecheck__age-gate',
+                ageDay: 1,
+                ageMonth: 'January',
+                ageYear: 1980
+            },
+            headers: {
+                Origin: "http://store.steampowered.com",
+                Referer: "http://store.steampowered.com/agecheck/app/" + appid,
+                "Content-Type": "application/json"
+            }
+        }).then(function(response) {
+            //console.log("getting tags for game '" + gameAppId + "'");
+            var jsonResponse = html2json(response.text);
+
+            return Parse.Promise.as(getSteamTags(jsonResponse));
+        });
+
+
+    }, function(error) {
+        console.log("Redirect was not successful");
+    });
+}
 
 function html2json(html) {
     //return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''));
@@ -53,7 +96,7 @@ function html2json(html) {
 function getSteamTags(jsonifiedHtml) {
     var tags = [];
     var steamTagNode = findJsonNode("category_block", jsonifiedHtml, true);
-    console.log(steamTagNode);
+    //console.log(steamTagNode);
     for (var i = 0; i < steamTagNode.child.length; i++) {
         var ele = steamTagNode.child[i];
         var tagMatch = ele.text.match(/>.*<\/a>/);

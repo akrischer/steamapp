@@ -30,16 +30,17 @@ module.exports.get = function(urlParams, response) {
         } else {
             var userGamesQuery = new Parse.Query(UserGame);
             userGamesQuery.equalTo('user', parseUtils.createPointer('_User', user.id));
-            userGamesQuery.include('game.tags');
-            userGamesQuery.include('game.sort_criteria');
+            userGamesQuery.include('game.tags,game.sort_criteria');
             return userGamesQuery.find();
         }
     }).then(function(userGames) {
-        var games = _.map(userGames, function(ug) {
-            return ug.get('game');
-        });
+        if (userGames) {
+            var games = _.map(userGames, function(ug) {
+                return ug.get('game');
+            });
 
-        respond.success(games);
+            respond.success(response, games, 'Game');
+        }
     });
 };
 
