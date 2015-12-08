@@ -22,7 +22,7 @@ module.exports.get = function(urlParams, response) {
         'avatar_medium' : user.get("steam_account").get("avatar_medium_url"),
         'avatar_full' : user.get("steam_account").get("avatar_full_url"),
         'created_at' : user.createdAt,
-        'updated_at' : user.updatedAt,
+        'updated_at' : user.updatedAt
       });
     }
     else {

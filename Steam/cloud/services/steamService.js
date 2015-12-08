@@ -36,10 +36,10 @@ module.exports.getTagsForGame = function(gameAppId) {
     }).then(function(response) {
         // we need to bypass age gate
         if (mustBypassAgeGate(response)) {
-            console.log("Must bypass age gate for appid " + appid);
+            //console.log("Must bypass age gate for appid " + appid);
             return bypassAgeGatePromise(response, appid);
         } else if (/category_block/.test(response.text)) {
-            console.log("Do not need to bypass age gate for appid " + appid)
+            //console.log("Do not need to bypass age gate for appid " + appid)
             //console.log("getting tags for game '" + gameAppId + "'");
             var jsonResponse = html2json(response.text);
 
@@ -72,7 +72,7 @@ function getRawTextCookies(response) {
     });
     // remove the final "; " from the string
     rawText = rawText.substring(0, rawText.length - 2);
-    console.log("Cookie Raw Text = '" + rawText + "'");
+    //console.log("Cookie Raw Text = '" + rawText + "'");
     return rawText;
 }
 
