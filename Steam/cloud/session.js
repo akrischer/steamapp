@@ -120,7 +120,7 @@ module.exports.create = function(body, response) {
             return ug.get('game');
         });
         // send the session coupled with the games
-        respond.success(response, session, 'Session');
+        respond.success(response, results, 'Session');
     }, function(error) {
         response.error(error);
     });
