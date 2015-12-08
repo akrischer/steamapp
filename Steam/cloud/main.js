@@ -179,10 +179,6 @@ Parse.Cloud.job("triggerUserData", function(request, status) {
             }, function() {
                 console.log("Something went wrong saving the user");
             });
-        //});, function() {
-            //console.log("Something went wrong setting current user");
-        //});
-
     }).then(function() {
         status.success();
     }, function(error) {
@@ -267,65 +263,6 @@ function createAndSaveNewGamesPromise(games) {
             });
         });
         return promise;
-    })
-}
-
-// ALL of the games
-function createAndSaveNewTagsPromise(games) {
-    var getTagsPromises = _.map(games, function(game) {
-        return steamService.getTagsForGame(game.app_id);
-    });
-
-    return Parse.Promise.when(getTagsPromises).then(function() {
-        var saveTagPromises = [];
-        var promise = Parse.Promise.as();
-
-        // Create a list of tags
-        _.each(arguments, function(tags) {
-            if (tags == null) { return; }
-            // [[tag1, tag2], [tag2, tag3]] --> [tag1, tag2, tag2, tag3]
-            var tagArray = _.flatten(tags);
-            // [tag1, tag2, tag2, tag3] --> [tag1, tag2, tag3]
-            tagArray = _.unique(tagArray, function(tag) { return tag.name; });
-
-            //console.log("Tag Array has " + tagArray.length + " elements");
-            //console.log("Tag Array: " + tagArray);
-
-            var tagQuery = new Parse.Query(Tag);
-            tagQuery.containedIn('name', _.map(tagArray, function(t) { return t.name; }));
-
-            promise = promise.then(function() {
-                return tagQuery.find().then(function(parseTags) {
-                    var parseTagNames = _.map(parseTags, function(parseTag) {
-                        return parseTag.get('name');
-                    });
-
-                    // remove all tags that are already in db
-                    tagArray = _.filter(tagArray, function(tag) {
-                        return !_.contains(parseTagNames, tag.name);
-                    })
-                }).then(function() {
-                    var promise = Parse.Promise.as();
-                    _.each(tagArray, function(tag) {
-                        console.log("saving tag '" + tag.name + "'");
-                        promise = promise.then(function() {
-                            var newTag = new Tag();
-                            newTag.set('name', tag.name);
-                            newTag.set('icon_url', tag.icon_url);
-                            newTag.save();
-                            saveTagPromises.push(newTag);
-                        });
-                    });
-                    return Parse.Promise.as(saveTagPromises);
-                });
-            });
-        });
-        return promise;
-    }, function(error) {
-        console.log("ERROR - createAndSaveNewTagsPromise");
-        _.each(Object.getOwnPropertyNames(error), function(key) {
-            console.log("'" + key + "': '" + error[key] + "'");
-        })
     })
 }
 

@@ -138,7 +138,6 @@ function bypassAgeGatePromise(originalResponse, appid) {
 }
 
 function html2json(html) {
-    //return JSON.parse(JSON.stringify(h2j.html2json(html, true)).replace(/(\\n|\\r|\\t)+/g, ''));
     return h2j.html2json(html, true)
 }
 

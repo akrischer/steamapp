@@ -94,11 +94,18 @@ function Game(resource) {
 function Tag(resource) {
     return handleArrays(resource, _Tag);
     function _Tag(tag) {
-        return {
-            id: tag.id,
-            icon_url: tag.get('icon_url'),
-            name: tag.get('name')
-        };
+        var icon_url = tag.get('icon_url');
+        var name = tag.get('name');
+        if (icon_url && name) {
+            return {
+                id: tag.id,
+                icon_url: tag.get('icon_url'),
+                name: tag.get('name')
+            };
+        } else {
+            return tag.id;
+        }
+
     }
 }
 

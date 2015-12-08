@@ -48,7 +48,7 @@ module.exports.get = function(urlParams, response) {
     var openSessionsQuery = getAllOpenSessionsQuery(userId);
 
     var results = new SessionResponse(null, null);
-
+    
     openSessionsQuery.first().then(function(session) {
         results.session = session;
 
