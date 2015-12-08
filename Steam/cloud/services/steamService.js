@@ -7,7 +7,7 @@ var _ = require('underscore');
 
 module.exports.getOwnedGames = function(steamAccount) {
     var url = steamBaseUrl + 'IPlayerService/GetOwnedGames/v0001/?key=' + steamKey;
-    url += '&include_appinfo=1&include_played_free_games=0&format=json';
+    url += '&include_appinfo=1&include_played_free_games=1&format=json';
     url += '&steamid=' + steamAccount.get('steam_id');
     console.log("Steam url: " + url);
     return Parse.Cloud.httpRequest({
@@ -21,13 +21,9 @@ module.exports.getOwnedGames = function(steamAccount) {
 };
 
 /**
- * Returns promise for tags for a specific steam game (appid):
- *      [
- *          {
- *              icon_url: ...,
- *              name: ...
- *          }
- *      ]
+ * Return a Promise of an object that has keys:
+ *  - tags
+ *  - app_id
  * @param gameAppId
  */
 module.exports.getTagsForGame = function(gameAppId) {
@@ -35,17 +31,28 @@ module.exports.getTagsForGame = function(gameAppId) {
     //console.log("Getting tags for appid " + gameAppId);
     return Parse.Cloud.httpRequest({
         method: "GET",
-        url: "http://store.steampowered.com/app/" + appid
+        url: "http://store.steampowered.com/app/" + appid,
+        followRedirects: true
     }).then(function(response) {
-        //console.log("getting tags for game '" + gameAppId + "'");
-        var jsonResponse = html2json(response.text);
+        // we need to bypass age gate
+        if (mustBypassAgeGate(response)) {
+            console.log("Must bypass age gate for appid " + appid);
+            return bypassAgeGatePromise(response, appid);
+        } else if (/category_block/.test(response.text)) {
+            console.log("Do not need to bypass age gate for appid " + appid)
+            //console.log("getting tags for game '" + gameAppId + "'");
+            var jsonResponse = html2json(response.text);
 
-        return Parse.Promise.as(getSteamTags(jsonResponse));
+            return Parse.Promise.as({
+                tags: getSteamTags(jsonResponse),
+                app_id: appid
+            });
+        } else {
+            console.log("WARNING: Skipping getting tags for game '" + appid + "'");
+            return Parse.Promise.as(null);
+        }
     }, function(error) {
         console.log("Error getting tags for app " + appid);
-        _.each(Object.keys(error), function(key) {
-            console.log("'" + key + "': '" + error[key] + "'");
-        });
         // TODO: Better way to deal with redirects/bypassing age verification?
         if (error.status == 302) {
             return bypassAgeGatePromise(error, appid);
@@ -53,37 +60,80 @@ module.exports.getTagsForGame = function(gameAppId) {
     });
 };
 
-function bypassAgeGatePromise(error, appid) {
+function mustBypassAgeGate(response) {
+    return /Please enter your birth date to continue:/.test(response.text);
+}
+
+// returns raw string text of cookies in a response
+function getRawTextCookies(response) {
+    var rawText = "";
+    _.each(Object.getOwnPropertyNames(response.cookies), function(key) {
+        rawText += key + '=' + response.cookies[key].value + '; ';
+    });
+    // remove the final "; " from the string
+    rawText = rawText.substring(0, rawText.length - 2);
+    console.log("Cookie Raw Text = '" + rawText + "'");
+    return rawText;
+}
+
+function bypassAgeGatePromise(originalResponse, appid) {
+    console.log("Attempting bypass age gate sequence... appid = " + appid);
     return Parse.Cloud.httpRequest({
-        method: "GET",
-        url: error.headers.Location
+        method: "POST",
+        url: "http://store.steampowered.com/agecheck/app/" + appid,
+        followRedirects: true,
+        body: {
+            snr: "1_agecheck_agecheck__age-gate",
+            ageDay: "1",
+            ageMonth: "January",
+            ageYear: "1980"
+        },
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Cookie: getRawTextCookies(originalResponse),
+            Origin: "http://store.steampowered.com",
+            Referer: "http://store.steampowered.com/agecheck/app/" + appid + "/",
+            Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            Host: "store.steampowered.com"
+        }
     }).then(function(response) {
-        // bypass age verification gate
-        return Parse.Cloud.httpRequest({
-            method: "POST",
-            url: "http://store.steampowered.com/agecheck/app/" + appid,
-            followRedirects: true,
-            body: {
-                snr: '1_agecheck_agecheck__age-gate',
-                ageDay: 1,
-                ageMonth: 'January',
-                ageYear: 1980
-            },
-            headers: {
-                Origin: "http://store.steampowered.com",
-                Referer: "http://store.steampowered.com/agecheck/app/" + appid,
-                "Content-Type": "application/json"
-            }
-        }).then(function(response) {
-            //console.log("getting tags for game '" + gameAppId + "'");
-            var jsonResponse = html2json(response.text);
+        console.log("Age gate SHOULD be bypassed for appid " + appid);
+        console.log(getRawTextCookies(response));
+        console.log("Bypassed? " + /category_block/.test(response.text));
 
-            return Parse.Promise.as(getSteamTags(jsonResponse));
+        //console.log("getting tags for game '" + gameAppId + "'");
+        var jsonResponse = html2json(response.text);
+
+        return Parse.Promise.as({
+            tags: getSteamTags(jsonResponse),
+            app_id: appid
         });
-
-
     }, function(error) {
-        console.log("Redirect was not successful");
+        // For some reason, redirects won't be followed (maybe because it's redirecting to a GET?)
+        if (error.status == 302) {
+            return Parse.Cloud.httpRequest({
+                url: error.headers.Location,
+                method: "GET",
+                followRedirects: true,
+                headers: {
+                    Cookie: getRawTextCookies(error)
+                }
+            }).then(function(response) {
+                var jsonResponse = html2json(response.text);
+
+                return Parse.Promise.as({
+                    tags: getSteamTags(jsonResponse),
+                    app_id: appid
+                });
+            }, function(error) {
+                console.log("Error getting page after bypassing age gate: " + error.status);
+            })
+        } else if (error.status == 503 || error.status == 504) {
+            console.log("Request timed out for bypassing age gate for app '" + appid + "'. Retrying...");
+            return bypassAgeGatePromise(originalResponse, appid)
+        } else {
+            console.log("Something went wrong trying to bypass age gate for app '" + appid + "': " + JSON.stringify(error));
+        }
     });
 }
 
@@ -96,7 +146,6 @@ function html2json(html) {
 function getSteamTags(jsonifiedHtml) {
     var tags = [];
     var steamTagNode = findJsonNode("category_block", jsonifiedHtml, true);
-    //console.log(steamTagNode);
     for (var i = 0; i < steamTagNode.child.length; i++) {
         var ele = steamTagNode.child[i];
         var tagMatch = ele.text.match(/>.*<\/a>/);
@@ -109,7 +158,6 @@ function getSteamTags(jsonifiedHtml) {
             tags.push(newTag);
         }
     }
-
     return tags;
 }
 //////////////////////////////////
