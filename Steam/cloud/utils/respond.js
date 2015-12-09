@@ -119,7 +119,8 @@ function Criterion(resource) {
             tags: Tag(criterion.get('tags'))
         };
         function _getIconUrl(criterionName) {
-            return images.getBaseDomainUrl('criterion') + "/" + criterionName + ".png";
+            var sanitizedName = criterionName.replace(/[^a-z0-9_\-]/gi, '_');
+            return images.getBaseDomainUrl('criterion') + "/" + sanitizedName + ".png";
         }
     }
 

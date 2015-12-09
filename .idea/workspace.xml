@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Community.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Input.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Multiplayer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Single Player.png" />
+      <change type="MOVED" beforePath="C:\Users\Andrew\Documents\steamapp\Steam\public\images\domain\criterion\Single Player.png" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Single_Player.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" afterPath="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,25 +27,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="user.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="user.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49753696">
-              <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="respond.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="respond.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="96" column="41" selection-start-line="96" selection-start-column="41" selection-end-line="96" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.70689654">
+              <caret line="122" column="77" selection-start-line="122" selection-start-column="77" selection-end-line="122" selection-end-column="77" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Single_Player.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Steam/public/images/domain/criterion/Single_Player.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -150,7 +156,6 @@
         <option value="$PROJECT_DIR$/Steam/cloud/question.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/utils/parseUtils.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/session.js" />
-        <option value="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
         <option value="$PROJECT_DIR$/Steam/jobs/gameJobs.js" />
         <option value="$PROJECT_DIR$/Steam/jobs/userDataJobs.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/jobs/userDataJobs.js" />
@@ -159,6 +164,7 @@
         <option value="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/main.js" />
         <option value="$PROJECT_DIR$/Steam/cloud/user.js" />
+        <option value="$PROJECT_DIR$/Steam/cloud/utils/respond.js" />
       </list>
     </option>
   </component>
@@ -699,12 +705,12 @@
       <workItem from="1288761406777" duration="37000" />
       <workItem from="1449008164803" duration="47320000" />
       <workItem from="1449423704632" duration="51965000" />
-      <workItem from="1449609203591" duration="1952000" />
+      <workItem from="1449609203591" duration="2270000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="139625000" />
+    <option name="totallyTimeSpent" value="139943000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1678" y="40" width="1179" height="948" extended-state="0" />
@@ -784,14 +790,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/images.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1128,13 +1126,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
+    <entry file="file://$PROJECT_DIR$/Steam/public/images/domain/criterion/Community.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="41" selection-start-line="96" selection-start-column="41" selection-end-line="96" selection-end-column="41" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1146,16 +1147,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/public/images/domain/criterion/Community.png">
+    <entry file="file://$PROJECT_DIR$/Steam/public/images/domain/criterion/Single_Player.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
+    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/respond.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49753696">
-          <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-          <folding />
+        <state vertical-scroll-proportion="0.70689654">
+          <caret line="122" column="77" selection-start-line="122" selection-start-column="77" selection-end-line="122" selection-end-column="77" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
