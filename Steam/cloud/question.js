@@ -23,6 +23,7 @@ module.exports.get = function(urlParams, response) {
     }
 
     query.find().then(function(questions) {
+        console.log("Found " + questions.length + " questions");
         respond.success(response, questions, 'Question');
     }, function(error) {
         response.error(error);

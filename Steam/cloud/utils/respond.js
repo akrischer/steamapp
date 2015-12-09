@@ -131,6 +131,8 @@ function Question(resource) {
     var criteriaIds = resource.map(function(question) {
        return question.get('criterion').id;
     });
+    // filter out any duplicates
+    criteriaIds = _.unique(criteriaIds);
 
     // Then for each criterion id, filter the questions to find the questions whose criterion id match.
     // Then build the object.
