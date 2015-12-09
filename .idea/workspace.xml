@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fcbab217-c60b-4ecc-bc5a-4885afd3c9c4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" afterPath="$PROJECT_DIR$/Steam/cloud/services/steamService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Steam/cloud/user.js" afterPath="$PROJECT_DIR$/Steam/cloud/user.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Community.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Input.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Multiplayer.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Steam/public/images/domain/criterion/Single Player.png" />
     </list>
     <ignored path="steamapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,21 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="EcmaScript6.js" pinned="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript6.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="280" column="0" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="user.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18842365">
-              <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
+            <state vertical-scroll-proportion="0.49753696">
+              <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -415,8 +407,8 @@
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\cloud" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Andrew\Documents\steamapp\Steam\cloud" />
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\public\images\domain\criterion" />
+      <recent name="C:\Users\Andrew\Documents\steamapp\Steam\cloud" />
       <recent name="C:\Users\Andrew\Documents\steamapp\Steam\Dependencies" />
     </key>
   </component>
@@ -707,12 +699,12 @@
       <workItem from="1288761406777" duration="37000" />
       <workItem from="1449008164803" duration="47320000" />
       <workItem from="1449423704632" duration="51965000" />
-      <workItem from="1449609203591" duration="817000" />
+      <workItem from="1449609203591" duration="1952000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138490000" />
+    <option name="totallyTimeSpent" value="139625000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1678" y="40" width="1179" height="948" extended-state="0" />
@@ -792,14 +784,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Steam/cloud/utils/images.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/criterion.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1162,10 +1146,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Steam/public/images/domain/criterion/Community.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Steam/cloud/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18842365">
-          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.49753696">
+          <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
           <folding />
         </state>
       </provider>
