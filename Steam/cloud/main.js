@@ -372,8 +372,8 @@ function getGamesPromises(steamAccount) {
             var newlyMadeSteamGame = new SimpleMapPrototype();
             newlyMadeSteamGame.set('app_id', game.app_id);
             newlyMadeSteamGame.set('name', game.name);
-            newlyMadeSteamGame.set('icon_url', game.img_icon_url);
-            newlyMadeSteamGame.set('box_art_url', game.img_logo_url);
+            newlyMadeSteamGame.set('icon_url', game.icon_url);
+            newlyMadeSteamGame.set('box_art_url', game.box_art_url);
             // TODO: Sort Criteria
             newlyMadeSteamGame.set('tagQuery', game.tagQuery);
             results.push(newlyMadeSteamGame);
